@@ -15,6 +15,8 @@ namespace TaskList.Interfaces
 
         TaskListModel GetUsersTasks(string id);
 
+        bool sdndfjndfjndfjnfdjf();
+
         TaskListModel GetGivenTasks(string id);
 
         bool IsAdmin(string id);
