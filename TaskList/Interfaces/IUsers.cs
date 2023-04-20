@@ -3,7 +3,7 @@ using TaskList.Models.ViewModels;
 
 namespace TaskList.Interfaces
 {
-    public interface IUser
+    public interface IUsers
     {
         bool Login(LoginUser loginUser);
 
