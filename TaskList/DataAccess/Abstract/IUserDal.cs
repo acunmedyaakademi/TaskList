@@ -4,7 +4,7 @@ using TaskList.Models.ViewModels.UserViewModels;
 
 namespace TaskList.Interfaces
 {
-    public interface IUsers
+    public interface IUserDal
     {
         bool Login(LoginUser loginUser);
 

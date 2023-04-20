@@ -2,7 +2,7 @@
 
 namespace TaskList.Interfaces
 {
-    public interface ITasks
+    public interface ITaskDal
     {
         bool AddTask(Task task);
 

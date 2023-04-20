@@ -4,9 +4,9 @@ using TaskList.Models;
 using TaskList.Models.ViewModels.TaskViewModels;
 using TaskList.Models.ViewModels.UserViewModels;
 
-namespace TaskList.DataAccess
+namespace TaskList.DataAccess.Concrete
 {
-    public class UserDal : IUsers
+    public class UserDal : IUserDal
     {
         public bool AddUser(AddUser addUser)
         {
