@@ -6,13 +6,9 @@ namespace TaskList.Interfaces
     public interface IComments
     {
 
-        List<Comment> GetAcceptedComments(string CommentId);
+        List<Comment> GetComments(Guid TaskId);
 
-        bool AcceptComment(string CommentId);
-
-        bool DeleteComment(string CommentId);
-
-        bool ControUnacceptedComment(string UserId);
+        bool DeleteComment(Guid CommentId);
 
     }
 }

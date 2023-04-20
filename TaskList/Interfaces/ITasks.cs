@@ -6,11 +6,11 @@
 
         bool UpdateTask(Task task);
 
-        bool DoneTask(string TaskId);
+        bool DoneTask(Guid TaskId);
 
-        bool DeleteTask(string TaskId);
+        bool DeleteTask(Guid TaskId);
 
-        bool ControlUndoneTask(string AssignerId, string AssingerById);
+        bool ControlUndoneTask(Guid AssignerId, Guid AssingedById);
 
 
     }
