@@ -15,8 +15,6 @@ namespace TaskList.Controllers
 
         public IActionResult Index()
         {
-            string name = "Sahil";
-            string sasa = "dmklsmkd";
             return View();
         }
 
