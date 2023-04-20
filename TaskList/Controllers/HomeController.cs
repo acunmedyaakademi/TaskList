@@ -15,8 +15,10 @@ namespace TaskList.Controllers
 
         public IActionResult Index()
         {
+            string name = "tfhgfhgh";
             return View();
         }
+
 
         public IActionResult Privacy()
         {
