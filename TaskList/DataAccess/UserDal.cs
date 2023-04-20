@@ -1,7 +1,8 @@
 ﻿using System.Data.SqlClient;
 using TaskList.Interfaces;
 using TaskList.Models;
-using TaskList.Models.ViewModels;
+using TaskList.Models.ViewModels.TaskViewModels;
+using TaskList.Models.ViewModels.UserViewModels;
 
 namespace TaskList.DataAccess
 {

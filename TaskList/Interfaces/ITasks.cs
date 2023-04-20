@@ -1,4 +1,6 @@
-﻿namespace TaskList.Interfaces
+﻿using TaskList.Models.ViewModels;
+
+namespace TaskList.Interfaces
 {
     public interface ITasks
     {
@@ -11,6 +13,10 @@
         bool DeleteTask(Guid TaskId);
 
         bool ControlUndoneTask(Guid AssignerId, Guid AssingedById);
+
+        TaskListModel GetUsersTasks(Guid id);
+
+        TaskListModel GetGivenTasks(Guid id);
 
 
     }

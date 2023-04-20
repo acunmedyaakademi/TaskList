@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskList.Models.ViewModels
+namespace TaskList.Models.ViewModels.UserViewModels
 {
-    public class AddUser
+    public class LoginUser
     {
         [Required]
         [EmailAddress]
@@ -10,12 +10,7 @@ namespace TaskList.Models.ViewModels
 
         [Required]
         [MaxLength(50)]
-        [MinLength(2)]
+        [MinLength(5)]
         public string Password { get; set; }
-
-        [Required]
-        [MinLength(2)]
-        [MaxLength(70)]
-        public string Name{ get; set; }
     }
 }

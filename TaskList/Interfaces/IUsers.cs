@@ -1,5 +1,6 @@
 ﻿using TaskList.Models;
-using TaskList.Models.ViewModels;
+using TaskList.Models.ViewModels.TaskViewModels;
+using TaskList.Models.ViewModels.UserViewModels;
 
 namespace TaskList.Interfaces
 {
@@ -12,10 +13,6 @@ namespace TaskList.Interfaces
         User GetUserById(string id);
 
         User GetUserByMail(string Email);
-
-        TaskListModel GetUsersTasks(string id);
-
-        TaskListModel GetGivenTasks(string id);
 
         bool IsAdmin(string id);
 
