@@ -1,9 +1,9 @@
 ﻿using TaskList.Interfaces;
 using TaskList.Models;
 
-namespace TaskList.DataAccess
+namespace TaskList.DataAccess.Concrete
 {
-    public class CommentDal : IComments
+    public class CommentDal : ICommentDal
     {
         public bool DeleteComment(Guid CommentId)
         {

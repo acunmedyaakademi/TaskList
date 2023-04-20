@@ -1,8 +1,8 @@
 ﻿using TaskList.Interfaces;
 
-namespace TaskList.DataAccess
+namespace TaskList.DataAccess.Concrete
 {
-    public class TaskDal : ITasks
+    public class TaskDal : ITaskDal
     {
         public bool AddTask(Task task)
         {

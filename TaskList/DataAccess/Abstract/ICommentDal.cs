@@ -3,7 +3,7 @@ using TaskList.Models;
 
 namespace TaskList.Interfaces
 {
-    public interface IComments
+    public interface ICommentDal
     {
 
         List<Comment> GetComments(Guid TaskId);
