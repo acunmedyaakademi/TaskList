@@ -8,12 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\ViewModels\CommentViewModels\" />
-    <Folder Include="Models\ViewModels\TaskViewModels\" />
-    <Folder Include="Models\ViewModels\UserViewModels\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 {
     public class JoinedTask
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string AssingerName { get; set; }
         public string AssignedByName { get; set; }
         public string TaskName { get; set; }

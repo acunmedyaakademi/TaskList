@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using TaskList.Interfaces;
 using TaskList.Models;
-using TaskList.Models.ViewModels.TaskViewModels;
+using TaskList.Models.ViewModels;
 using TaskList.Models.ViewModels.UserViewModels;
 
 namespace TaskList.DataAccess.Concrete
@@ -60,11 +60,6 @@ namespace TaskList.DataAccess.Concrete
         }
 
         public TaskListModel GetUsersTasks(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsAdmin(string id)
         {
             throw new NotImplementedException();
         }

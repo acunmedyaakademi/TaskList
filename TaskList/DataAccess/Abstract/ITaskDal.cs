@@ -18,6 +18,8 @@ namespace TaskList.Interfaces
 
         TaskListModel GetGivenTasks(Guid id);
 
+        TaskListModel GetAllTasks();
 
+        bool PostTask(Task task);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using TaskList.Models;
-using TaskList.Models.ViewModels.TaskViewModels;
 using TaskList.Models.ViewModels.UserViewModels;
 
 namespace TaskList.Interfaces
@@ -14,10 +13,6 @@ namespace TaskList.Interfaces
 
         User GetUserByMail(string Email);
 
-        bool IsAdmin(string id);
-
         bool ResetPassword(string id);
-
-
     }
 }
