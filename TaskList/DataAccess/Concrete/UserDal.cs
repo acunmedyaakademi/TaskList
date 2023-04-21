@@ -6,9 +6,9 @@ using TaskList.Models.ViewModels.UserViewModels;
 
 namespace TaskList.DataAccess.Concrete
 {
-    public class UserDal : IUserDal
+    public class UserDal : IUserDal //TODO: TEST EDİLECEK
     {
-        public bool AddUser(AddUser addUser)
+        public bool AddUser(AddUser addUser) //TODO: DÜZENLENECEK
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
             {
@@ -41,37 +41,147 @@ namespace TaskList.DataAccess.Concrete
                 }
 
             }
-
-        }
-
-        public TaskListModel GetGivenTasks(string id)
-        {
-            throw new NotImplementedException();
         }
 
         public User GetUserById(string id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    User user = new();
+
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "select id, name, email, password, mail_code, mail_send_date, mail_confirmed, created_on, is_active from users where id = @id",
+                            connection);
+
+                    command.Parameters.AddWithValue("@id", id);
+
+                    var reader = command.ExecuteReader();
+
+                    reader.Read();
+                    user.Id = reader.GetGuid(0);
+                    user.Name =reader.GetString(1);
+                    user.Email = reader.GetString(2);
+                    user.Password = reader.GetString(3);
+                    user.MailCode = reader.GetString(4);
+                    user.MailSendDate = reader.GetDateTime(5);
+                    user.MailConfirmed = reader.GetBoolean(6);
+                    user.CreatedOn= reader.GetDateTime(7);
+                    user.IsActive= reader.GetBoolean(8);
+
+                    return user;
+
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
         }
 
         public User GetUserByMail(string Email)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    User user = new();
+
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "select id, name, email, password, mail_code, mail_send_date, mail_confirmed, created_on, is_active from users where email = @email",
+                            connection);
+
+                    command.Parameters.AddWithValue("@email", Email);
+
+                    var reader = command.ExecuteReader();
+
+                    reader.Read();
+                    user.Id = reader.GetGuid(0);
+                    user.Name = reader.GetString(1);
+                    user.Email = reader.GetString(2);
+                    user.Password = reader.GetString(3);
+                    user.MailCode = reader.GetString(4);
+                    user.MailSendDate = reader.GetDateTime(5);
+                    user.MailConfirmed = reader.GetBoolean(6);
+                    user.CreatedOn = reader.GetDateTime(7);
+                    user.IsActive = reader.GetBoolean(8);
+
+                    return user;
+
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
         }
 
-        public TaskListModel GetUsersTasks(string id)
-        {
-            throw new NotImplementedException();
-        }
 
         public bool Login(LoginUser loginUser)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    User user = new();
+
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "select id, name, email, password, mail_code, mail_send_date, mail_confirmed, created_on, is_active from users where email = @email",connection);
+                    command.Parameters.AddWithValue("@password", loginUser.Password);
+                    command.Parameters.AddWithValue("@email", loginUser.Email);
+
+                    var reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        return true;
+
+                    }
+                    return false;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
         }
 
-        public bool ResetPassword(string id)
+        public bool ResetPassword(ResetPassword resetPassword)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue)) //TODO:  sayackonulacak
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new SqlCommand("UPDATE users SET password = @password WHERE email = @email and mail_code = @mail_Code",connection);
+
+                    command.Parameters.AddWithValue("@email", resetPassword.Email);
+                    command.Parameters.AddWithValue("@mail_Code", resetPassword.Mail_Code);
+                    command.Parameters.AddWithValue("@password", resetPassword.Password);
+
+                    int a = command.ExecuteNonQuery();
+
+                    if (a==0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
         }
     }
 }

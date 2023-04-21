@@ -2,7 +2,7 @@
 
 namespace TaskList.Models.ViewModels.UserViewModels
 {
-    public class LoginUser
+    public class ResetPassword
     {
         [Required]
         [EmailAddress]
@@ -12,9 +12,7 @@ namespace TaskList.Models.ViewModels.UserViewModels
         [MaxLength(50)]
         [MinLength(3)]
         public string Password { get; set; }
-
         [Required]
-        public bool MailConfirmed{ get; set; }
-
+        public string Mail_Code { get; set; }
     }
 }

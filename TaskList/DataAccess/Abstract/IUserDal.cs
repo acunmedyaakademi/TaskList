@@ -13,6 +13,6 @@ namespace TaskList.Interfaces
 
         User GetUserByMail(string Email);
 
-        bool ResetPassword(string id);
+        bool ResetPassword(ResetPassword resetPassword);
     }
 }
