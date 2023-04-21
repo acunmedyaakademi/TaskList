@@ -12,8 +12,6 @@ namespace TaskList.Interfaces
 
         bool DeleteTask(Guid TaskId);
 
-        bool ControlUndoneTask(Guid AssignerId, Guid AssingedById);
-
         TaskListModel GetUsersTasks(Guid id);
 
         TaskListModel GetGivenTasks(Guid id);

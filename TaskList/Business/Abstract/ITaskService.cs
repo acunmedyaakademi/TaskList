@@ -2,5 +2,6 @@
 {
     public interface ITaskService
     {
+        bool ControlUndoneTask(Guid AssignerId, Guid AssingedById);
     }
 }

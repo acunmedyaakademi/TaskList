@@ -2,6 +2,7 @@
 {
     public class JoinedTask
     {
+
         public Guid Id { get; set; }
         public string AssingerName { get; set; }
         public string AssignedByName { get; set; }
