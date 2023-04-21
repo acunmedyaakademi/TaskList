@@ -1,4 +1,6 @@
-﻿using TaskList.Models.ViewModels;
+﻿using TaskList.Models;
+using TaskList.Models.ViewModels;
+using Task = TaskList.Models.Task;
 
 namespace TaskList.Interfaces
 {
@@ -12,12 +14,10 @@ namespace TaskList.Interfaces
 
         bool DeleteTask(Guid TaskId);
 
-        TaskListModel GetUsersTasks(Guid id);
+        List<JoinedTask> GetUsersTasks(Guid id);
 
-        TaskListModel GetGivenTasks(Guid id);
+        List<JoinedTask> GetGivenTasks(Guid id);
 
-        TaskListModel GetAllTasks();
-
-        bool PostTask(Task task);
+        List<JoinedTask> GetAllTasks();
     }
 }

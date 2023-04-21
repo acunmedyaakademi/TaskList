@@ -2,7 +2,8 @@
 {
     public class TaskListModel
     { 
-        public List<JoinedTask> Tasks { get; set; }
-
+        public List<JoinedTask> UserTasks { get; set; }
+        public List<JoinedTask> GivenTasks { get; set; }
+        public List<Comment> Comments{ get; set; }
     }
 }

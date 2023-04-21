@@ -6,7 +6,7 @@ namespace TaskList.Interfaces
 {
     public interface ICommentDal
     {
-        List<Comment> GetComments(Guid TaskId);
+        List<JoinedComment> GetComments(Guid TaskId);
 
         bool DeleteComment(Guid CommentId);
 

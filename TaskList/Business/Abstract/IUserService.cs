@@ -2,9 +2,10 @@
 {
     public interface IUserService
     {
-        bool ControlResetPasswordTime(string email); //span atılmasın diye
+        bool ControlResetPasswordTime(string email);
 
         bool ControlIsMailCodeExpired(string mail/*buraya id de gelebilir duruma göre*/);
+
         bool ControlIsEmailConfirmed(string email);
 
     }

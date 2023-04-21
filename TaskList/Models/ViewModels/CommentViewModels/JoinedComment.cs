@@ -8,7 +8,7 @@
         public string TaskName { get; set; }
         public DateTime CreatedOn { get; set; }
         public bool IsActive { get; set; }
-        public string theComment { get; set; }
+        public string TheComment { get; set; }
 
     }
 }
