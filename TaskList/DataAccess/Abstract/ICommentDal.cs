@@ -8,8 +8,11 @@ namespace TaskList.Interfaces
     {
         List<JoinedComment> GetComments(Guid TaskId);
 
+
+
         bool DeleteComment(Guid CommentId);
 
         bool AddComment(Comment comment);
+
     }
 }

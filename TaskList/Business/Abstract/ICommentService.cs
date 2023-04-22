@@ -1,8 +1,17 @@
-﻿namespace TaskList.Business.Abstract
+﻿using TaskList.Models.ViewModels.CommentViewModels;
+using TaskList.Models;
+
+namespace TaskList.Business.Abstract
 {
     public interface ICommentService
     {
-        bool ControlCommentDate();
-        bool ControlId(Guid id);
+        List<JoinedComment> GetComments(Guid TaskId);
+
+        bool DeleteComment(Guid CommentId);
+
+        bool AddComment(Comment comment);
+
+        bool ControlCommentDate(Guid TaskId);
+        
     }
 }
