@@ -65,7 +65,7 @@ namespace TaskList.DataAccess.Concrete
                         return false;
                     }
                     return true;
-                    
+
 
                 }
                 catch (Exception e)
@@ -202,6 +202,39 @@ namespace TaskList.DataAccess.Concrete
             }
         } // test edildi
 
+        public JoinedTask GetTask(Guid TaskId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+
+                    connection.Open();
+
+                    var command = new SqlCommand("SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id WHERE id = @id", connection);
+                    var reader = command.ExecuteReader();
+                    JoinedTask task = new();
+                    reader.Read();
+                    task.Id = reader.GetGuid(0);
+                    task.AssingerName = reader.GetString(1);
+                    task.AssignedByName = reader.GetString(2);
+                    task.TaskName = reader.GetString(3);
+                    task.TaskDescription = reader.GetString(4);
+                    task.CreatedOn = reader.GetDateTime(5);
+                    task.UpdatedOn = reader.GetDateTime(6);
+                    task.IsDone = reader.GetBoolean(7);
+                    task.IsActive = reader.GetBoolean(8);
+
+                    command.Parameters.AddWithValue("@id", TaskId);
+                    return task;
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+        }
+
         public List<JoinedTask> GetUsersTasks(Guid id)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
@@ -232,15 +265,12 @@ namespace TaskList.DataAccess.Concrete
                         task.IsActive = reader.GetBoolean(8);
                         joinedTasks.Add(task);
                     }
-
                     return joinedTasks;
-
                 }
                 catch (Exception e)
                 {
                     return null;
                 }
-
             }
         }
 
@@ -253,8 +283,7 @@ namespace TaskList.DataAccess.Concrete
                 {
                     connection.Open();
 
-                    var command = new SqlCommand(
-                            "UPDATE Tasks SET [assigner_id] = @assigner_id, [assigned_by_id] = @assigned_by_id, [task_name] = @task_name, [task_description] = @task_description , [updated_on] = @updated_on, [is_done] = @is_done, [is_active] = @is_active where id = @id ", connection);
+                    var command = new SqlCommand("UPDATE Tasks SET [assigner_id] = @assigner_id, [assigned_by_id] = @assigned_by_id, [task_name] = @task_name, [task_description] = @task_description , [updated_on] = @updated_on, [is_done] = @is_done, [is_active] = @is_active where id = @id ", connection);
 
                     command.Parameters.AddWithValue("@id", Guid.NewGuid());
                     command.Parameters.AddWithValue("@assigner_id", task.AssingerId);

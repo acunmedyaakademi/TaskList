@@ -57,13 +57,12 @@ namespace TaskList.DataAccess.Concrete
 
         public Comment? GetComment(Guid UserId, Guid TaskId)
         {
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
                 {
                     connection.Open();
-                    var command = new SqlCommand("select  TOP (1) [id] , [user_id], [task_id], [created_on], [is_active], [comment] where user_id = @user_id and task_id = @task_id order by created_on", connection);
+                    var command = new SqlCommand("select  TOP (1) [id] , [user_id], [task_id], [created_on], [is_active], [comment] from comments where user_id = @user_id and task_id = @task_id order by created_on desc", connection);
                     command.Parameters.AddWithValue("@user_id", UserId);
                     command.Parameters.AddWithValue("@task_id", TaskId);
 
