@@ -29,10 +29,10 @@
             <div class="card card-md">
                 <div class="card-body">
                     <h2 class="h2 text-center mb-4">Giriş Yap</h2>
-                    <form action="./" method="get" autocomplete="off" novalidate>
+                        <form asp-action="login" asp-controller="account" method="post">
                         <div class="mb-3">
                             <label class="form-label">Mail adresiniz</label>
-                            <input type="email" class="form-control" placeholder="your@email.com" autocomplete="off">
+                            <input type="email" name="email" class="form-control" placeholder="your@email.com">
                         </div>
                         <div class="mb-2">
                             <label class="form-label">
@@ -42,28 +42,23 @@
                                 </span>
                             </label>
                             <div class="input-group input-group-flat">
-                                <input type="password" class="form-control" placeholder="Şifreniz" autocomplete="off">
+                                <input type="password" name="password" class="form-control" placeholder="Şifreniz">
                                
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <label class="form-check">
-                                <input type="checkbox" class="form-check-input" />
-                                <span class="form-check-label">Beni Hatırla</span>
-                            </label>
-                        </div>
+                  
                         <div class="form-footer">
-                            <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                            <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
                         </div>
                         <div class="form-footer">
                             <a href="/" class="btn btn-primary w-100">Anasayfaya Dön</a>
                         </div>
-                    </form>
+                        </form>
                 </div>
 
             </div>
             <div class="text-center text-muted mt-3">
-                Hesabınız yok mu? <a href="/account/register" tabindex="-1">Kayıt ol</a>
+                Hesabınız yok mu? <a href="/account/register" tabindex="-1" >Kayıt ol</a>
             </div>
         </div>
     </div>

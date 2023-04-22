@@ -122,34 +122,37 @@ namespace TaskList.DataAccess.Concrete
         }
 
 
-        public bool Login(LoginUser loginUser)
+        public SessionModel? Login(LoginUser loginUser)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
             {
                 try
                 {
                     User user = new();
-
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "select id, name, email, password, mail_code, mail_send_date, mail_confirmed, created_on, is_active from users where email = @email",connection);
+                            "select id, name, email, mail_confirmed from users where email = @email and password = @password and is_active = 1",connection); 
                     command.Parameters.AddWithValue("@password", loginUser.Password);
                     command.Parameters.AddWithValue("@email", loginUser.Email);
-
                     var reader = command.ExecuteReader();
 
                     if (reader.HasRows)
                     {
-                        return true;
-
+                        reader.Read();
+                        SessionModel model = new();
+                        model.Id = reader.GetGuid(0);
+                        model.Name = reader.GetString(1);
+                        model.Email = reader.GetString(2);
+                        model.MailConfirmed = reader.GetBoolean(3);
+                        return model;
                     }
-                    return false;
 
+                    return null;
                 }
                 catch (Exception e)
                 {
-                    return false;
+                    return null;
                 }
             }
         }

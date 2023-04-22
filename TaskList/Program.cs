@@ -1,4 +1,5 @@
 using AspNetCore.ReCaptcha;
+using TaskList.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddReCaptcha(builder.Configuration.GetSection("ReCaptcha"));
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddDataAccesLayerService();
 
 builder.Services.AddSession(options =>
 {

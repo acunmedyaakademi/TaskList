@@ -5,7 +5,7 @@ namespace TaskList.Interfaces
 {
     public interface IUserDal
     {
-        bool Login(LoginUser loginUser);
+        SessionModel? Login(LoginUser loginUser);
 
         bool AddUser(AddUser addUser);
 
