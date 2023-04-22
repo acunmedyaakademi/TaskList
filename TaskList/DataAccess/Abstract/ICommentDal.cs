@@ -6,13 +6,14 @@ namespace TaskList.Interfaces
 {
     public interface ICommentDal
     {
-        List<JoinedComment> GetComments(Guid TaskId);
-
-
+        List<JoinedComment>? GetComments(Guid TaskId);
 
         bool DeleteComment(Guid CommentId);
 
         bool AddComment(Comment comment);
+
+        Comment? GetComment(Guid UserId, Guid TaskId);
+
 
     }
 }
