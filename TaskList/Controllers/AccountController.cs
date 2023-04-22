@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
+using TaskList.Business.Abstract;
 using TaskList.Interfaces;
 using TaskList.Models;
 using TaskList.Models.ViewModels.UserViewModels;
@@ -9,11 +10,11 @@ namespace TaskList.Controllers
 {
     public class AccountController : Controller
     {
-        readonly IUserDal _userDal;
+        readonly IUserService _userService;
 
-        public AccountController(IUserDal userDal)
+        public AccountController(IUserService userService)
         {
-            _userDal = userDal;
+            _userService = userService;
         }
 
         public IActionResult Login()
@@ -30,7 +31,7 @@ namespace TaskList.Controllers
                 ViewBag.Login = "Kullanıcı Adı veya Şifre Yanlış";
                 return View();
             }
-            SessionModel? model = _userDal.Login(loginUser);
+            SessionModel? model = _userService.Login(loginUser);
             if (model != null)
             {
                 if (!model.MailConfirmed)
@@ -62,7 +63,7 @@ namespace TaskList.Controllers
             {
                 //todo bussines bitince mail burada atılıp modele işlenecek
 
-                if (_userDal.AddUser(user))
+                if (_userService.AddUser(user))
                 {
                     return RedirectToAction("login", "account");
 
@@ -87,7 +88,7 @@ namespace TaskList.Controllers
             {
                 //todo bussines bitince mail burada atılıp modele işlenecek
 
-                if (_userDal.ResetPassword(model))
+                if (_userService.ResetPassword(model))
                 {
                     //todo burada login yapılabilir 
 

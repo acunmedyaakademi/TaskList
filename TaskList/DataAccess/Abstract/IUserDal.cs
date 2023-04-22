@@ -14,5 +14,9 @@ namespace TaskList.Interfaces
         User GetUserByMail(string Email);
 
         bool ResetPassword(ResetPassword resetPassword);
+
+        DateTime? GetMailTime(string email);
+
+        bool ControlIsEmailConfirmed(string email);
     }
 }

@@ -1,4 +1,6 @@
-﻿using TaskList.DataAccess.Concrete;
+﻿using TaskList.Business.Abstract;
+using TaskList.Business.Concrete;
+using TaskList.DataAccess.Concrete;
 using TaskList.Interfaces;
 
 namespace TaskList.DataAccess
@@ -11,6 +13,10 @@ namespace TaskList.DataAccess
             services.AddScoped<IUserDal,UserDal>();
             services.AddScoped<ITaskDal, TaskDal>();
             services.AddScoped<ICommentDal, CommentDal>();
+
+            services.AddScoped<IUserService, UserManager>();
+            services.AddScoped<ITaskService, TaskManager>();
+            services.AddScoped<ICommentService, CommentManager>();
         }
     }
 }
