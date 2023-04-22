@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor Accessor
 @{
-    string? UserName = Accessor.HttpContext.Session.GetString("LoginName");
+    string UserName = Accessor.HttpContext.Session.GetString("LoginName");
 }
 
 <!DOCTYPE html>
@@ -18,7 +18,6 @@
     <link href="/dist/css/tabler-vendors.min.css?1674944402" rel="stylesheet" />
     <link href="/dist/css/demo.min.css?1674944402" rel="stylesheet" />
     <script src="/dist/js/demo-theme.min.js?1674944402" defer></script>
-
 </head>
 <body>
     <div class="page">
@@ -157,5 +156,10 @@
         </div>
     </div>
 
+    
+       <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

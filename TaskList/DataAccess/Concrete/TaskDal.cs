@@ -43,6 +43,39 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
+
+        public bool ControlUndoneTask(Guid AssingedById)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "SELECT id, assigned_by_id, created_on, updated_on, is_done, is_active FROM tasks WHERE assigned_by_id = @assingedById and is_done = false",
+                            connection);
+                    command.Parameters.AddWithValue("@assingedById", AssingedById);
+
+                    var reader = command.ExecuteReader();
+
+                    reader.Read();
+                    if (reader.HasRows)
+                    {
+                        return false;
+                    }
+                    return true;
+                    
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+
+            }
+        }
+
         public bool DeleteTask(Guid TaskId)
         {
             try
@@ -71,7 +104,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "UPDATE Tasks SET [is_done] = @is_done where id = @id" , connection);
+                            "UPDATE Tasks SET [is_done] = @is_done where id = @id", connection);
 
                     command.Parameters.AddWithValue("@id", TaskId);
                     command.ExecuteNonQuery();
@@ -221,7 +254,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "UPDATE Tasks SET [assigner_id] = @assigner_id, [assigned_by_id] = @assigned_by_id, [task_name] = @task_name, [task_description] = @task_description , [updated_on] = @updated_on, [is_done] = @is_done, [is_active] = @is_active where id = @id ",connection);
+                            "UPDATE Tasks SET [assigner_id] = @assigner_id, [assigned_by_id] = @assigned_by_id, [task_name] = @task_name, [task_description] = @task_description , [updated_on] = @updated_on, [is_done] = @is_done, [is_active] = @is_active where id = @id ", connection);
 
                     command.Parameters.AddWithValue("@id", Guid.NewGuid());
                     command.Parameters.AddWithValue("@assigner_id", task.AssingerId);

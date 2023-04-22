@@ -16,7 +16,7 @@ namespace TaskList.Business.Abstract
         bool ResetPassword(ResetPassword resetPassword);
 
 
-        bool ControlResetPasswordTime(string email);
+        bool ControlMailTime(string email);
 
         bool ControlIsEmailConfirmed(string email);
 
