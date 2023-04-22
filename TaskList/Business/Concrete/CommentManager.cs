@@ -21,15 +21,15 @@ namespace TaskList.Business.Concrete
         }
 
 
-        public bool ControlCommentDate(Guid TaskId)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool DeleteComment(Guid CommentId)
         {
             _commentDal.DeleteComment(CommentId);
             return true;
+        }
+
+        public Comment? GetComment(Guid UserId, Guid TaskId)
+        {
+            return _commentDal.GetComment(UserId, TaskId);
         }
 
         public List<JoinedComment> GetComments(Guid TaskId)

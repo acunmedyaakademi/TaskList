@@ -11,7 +11,7 @@ namespace TaskList.Business.Abstract
 
         bool AddComment(Comment comment);
 
-        bool ControlCommentDate(Guid TaskId);
-        
+        Comment? GetComment(Guid UserId, Guid TaskId);
+
     }
 }
