@@ -22,6 +22,6 @@ namespace TaskList.Interfaces
 
         bool ControlUndoneTask(Guid AssingedById);
 
-        Task GetTask(Guid TaskId);
+        JoinedTask GetTask(Guid TaskId);
     }
 }

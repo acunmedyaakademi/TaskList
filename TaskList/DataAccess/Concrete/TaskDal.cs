@@ -305,6 +305,8 @@ namespace TaskList.DataAccess.Concrete
 
             }
         }
+
+        
     }
     //test edilmedi
 }
