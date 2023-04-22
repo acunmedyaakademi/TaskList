@@ -22,17 +22,26 @@ namespace TaskList.Business.Concrete
 
         public bool ControlIsEmailConfirmed(string email)
         {
-            throw new NotImplementedException();
+            return _userDal.ControlIsEmailConfirmed(email);
         }
 
-        public bool ControlIsMailCodeExpired(string mail)
+        public bool ControlMailTime(string email)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool ControlResetPasswordTime(string email)
-        {
-            throw new NotImplementedException();
+            if (_userDal.GetMailTime(email) == null)
+            {
+                return false;
+            }
+            else
+            {
+                DateTime? dateTime = _userDal.GetMailTime(email);
+                TimeSpan? dif = DateTime.Now - dateTime;
+                if (dif?.TotalMinutes < 5)
+                {
+                    return false;
+                }
+                return true;
+            }
+            
         }
 
         public User GetUserById(string id)
@@ -47,7 +56,7 @@ namespace TaskList.Business.Concrete
 
         public SessionModel? Login(LoginUser loginUser)
         {
-            throw new NotImplementedException();
+            return _userDal.Login(loginUser);
         }
 
         public bool ResetPassword(ResetPassword resetPassword)

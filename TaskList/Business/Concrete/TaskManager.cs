@@ -17,18 +17,18 @@ namespace TaskList.Business.Concrete
 
         public bool AddTask(Task task)
         {
-            _taskDal.AddTask(task);
-            return true;
-        }
+            if(ControlUndoneTask(task.AssignedById))
+            {
+                _taskDal.AddTask(task);
+                return true;
+            }
+            return false;
 
-        public bool ControlUndoneTask(Guid AssignerId, Guid AssingedById)
-        {
-            throw new NotImplementedException();
         }
 
         public bool ControlUndoneTask(Guid AssingedById)
         {
-            throw new NotImplementedException();
+            return _taskDal.ControlUndoneTask(AssingedById); 
         }
 
         public bool DeleteTask(Guid TaskId)

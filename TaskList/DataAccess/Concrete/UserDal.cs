@@ -43,6 +43,69 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
+        public bool ControlIsEmailConfirmed(string email)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "select id, name, email, password, mail_code, mail_send_date, mail_confirmed, created_on, is_active from users where email = @email and mail_confirmed = true",
+                            connection);
+
+                    command.Parameters.AddWithValue("@email", email);
+
+                    var reader = command.ExecuteReader();
+
+                    reader.Read();
+                    if(reader.HasRows)
+                    {
+                        return true;
+                    }
+                    return false;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public DateTime? GetMailTime(string email)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "select mail_send_date, mail_confirmed, is_active from users where email = @email and is_actve = true",
+                            connection);
+
+                    command.Parameters.AddWithValue("@email", email);
+
+                    var reader = command.ExecuteReader();
+
+                    reader.Read();
+                    if(reader.HasRows)
+                    {
+                        return reader.GetDateTime(0);
+                    }
+
+                    return null;
+
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+        }
+
         public User GetUserById(string id)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
