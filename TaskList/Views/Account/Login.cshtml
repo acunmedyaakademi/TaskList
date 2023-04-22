@@ -3,7 +3,7 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -32,7 +32,7 @@
                         <form asp-action="login" asp-controller="account" method="post">
                         <div class="mb-3">
                             <label class="form-label">Mail adresiniz</label>
-                            <input type="email" name="email" class="form-control" placeholder="your@email.com">
+                            <input type="email" required name="email" class="form-control" placeholder="your@email.com">
                         </div>
                         <div class="mb-2">
                             <label class="form-label">
@@ -42,7 +42,7 @@
                                 </span>
                             </label>
                             <div class="input-group input-group-flat">
-                                <input type="password" name="password" class="form-control" placeholder="Şifreniz">
+                                <input type="password" required minlength="3" maxlength="50" name="password" class="form-control" placeholder="Şifreniz">
                                
                             </div>
                         </div>
@@ -50,9 +50,9 @@
                         <div class="form-footer">
                             <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
                         </div>
-                        <div class="form-footer">
-                            <a href="/" class="btn btn-primary w-100">Anasayfaya Dön</a>
-                        </div>
+                        <br />
+                        <p>@ViewBag.Login</p>
+                       
                         </form>
                 </div>
 

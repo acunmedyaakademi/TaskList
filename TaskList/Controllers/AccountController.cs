@@ -25,6 +25,11 @@ namespace TaskList.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginUser loginUser)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Login = "Kullanıcı Adı veya Şifre Yanlış";
+                return View();
+            }
             SessionModel? model = _userDal.Login(loginUser);
             if (model != null)
             {
@@ -98,7 +103,8 @@ namespace TaskList.Controllers
             HttpContext.Session.Remove("LoginId");
             HttpContext.Session.Remove("LoginName");
             HttpContext.Session.Remove("LoginMail");
-            return View();
+            return RedirectToAction("login", "account");
+
         }
     }
 }
