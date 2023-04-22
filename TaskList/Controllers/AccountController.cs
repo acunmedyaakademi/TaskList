@@ -58,7 +58,7 @@ namespace TaskList.Controllers
         public IActionResult Register(AddUser user)
         {
             //todo recaptcha
-
+           
             if (ModelState.IsValid)
             {
                 //todo bussines bitince mail burada atılıp modele işlenecek
