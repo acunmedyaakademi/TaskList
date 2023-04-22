@@ -31,6 +31,8 @@ app.UseRouting();
 
 app.UseSession();
 
+app.UseStatusCodePagesWithReExecute("/error", "?code={0}");
+
 
 app.UseAuthorization();
 
