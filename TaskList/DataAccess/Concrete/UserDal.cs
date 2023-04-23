@@ -43,6 +43,35 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
+        public bool ConfirmMail(string email, string mailCode)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue)) //TODO:  sayackonulacak
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new SqlCommand("UPDATE users SET mail_confirmed = 1 WHERE email = @email and [mail_code] = @mailCode", connection);
+
+                    command.Parameters.AddWithValue("@email", email);
+                    command.Parameters.AddWithValue("@mailCode", mailCode);
+
+                    int a = command.ExecuteNonQuery();
+
+                    if (a == 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
+
         public bool ControlIsEmailConfirmed(string email)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
@@ -83,7 +112,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "select mail_send_date, mail_confirmed, is_active from users where email = @email and is_actve = true",
+                            "select mail_send_date, mail_confirmed, is_active from users where email = @email and is_acitve = true",
                             connection);
 
                     command.Parameters.AddWithValue("@email", email);
@@ -106,7 +135,7 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
-        public User GetUserById(string id)
+        public User GetUserById(Guid id)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
             {
@@ -230,7 +259,7 @@ namespace TaskList.DataAccess.Concrete
                     var command = new SqlCommand("UPDATE users SET password = @password WHERE email = @email and mail_code = @mail_Code",connection);
 
                     command.Parameters.AddWithValue("@email", resetPassword.Email);
-                    command.Parameters.AddWithValue("@mail_Code", resetPassword.Mail_Code);
+                    command.Parameters.AddWithValue("@mail_Code", resetPassword.MailCode);
                     command.Parameters.AddWithValue("@password", resetPassword.Password);
 
                     int a = command.ExecuteNonQuery();

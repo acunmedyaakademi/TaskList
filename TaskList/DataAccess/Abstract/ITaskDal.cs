@@ -1,5 +1,6 @@
 ﻿using TaskList.Models;
 using TaskList.Models.ViewModels;
+using TaskList.Models.ViewModels.UserViewModels;
 using Task = TaskList.Models.Task;
 
 namespace TaskList.Interfaces
@@ -23,5 +24,9 @@ namespace TaskList.Interfaces
         bool ControlUndoneTask(Guid AssingedById);
 
         JoinedTask GetTask(Guid TaskId);
+
+        Task GetTaskById(Guid taskId);
+
+        List<Report>? GetReports();
     }
 }

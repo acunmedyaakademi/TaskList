@@ -1,5 +1,7 @@
 ﻿using TaskList.Models.ViewModels.UserViewModels;
 using TaskList.Models;
+using TaskList.Models.ViewModels;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace TaskList.Business.Abstract
 {
@@ -7,19 +9,21 @@ namespace TaskList.Business.Abstract
     {
         SessionModel? Login(LoginUser loginUser);
 
-        bool Register(AddUser addUser);
+        ResponseModel Register(AddUser addUser);
 
-        User GetUserById(string id);
+        User GetUserById(Guid id);
 
         User GetUserByMail(string Email);
 
-        bool ResetPassword(ResetPassword resetPassword);
+        ResponseModel ResetPassword(ResetPassword resetPassword);
 
-        bool SendMailCode(string Email);
+        ResponseModel SendMailCode(string Email);
 
         bool ControlMailTime(string email);
 
         bool ControlIsEmailConfirmed(string email);
+
+        bool ConfirmMail(string email, string mailCode);
 
     }
 }

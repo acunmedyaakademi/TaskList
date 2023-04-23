@@ -9,7 +9,7 @@ namespace TaskList.Interfaces
 
         bool AddUser(AddUser addUser);
 
-        User GetUserById(string id);
+        User GetUserById(Guid id);
 
         User GetUserByMail(string Email);
 
@@ -20,5 +20,8 @@ namespace TaskList.Interfaces
         DateTime? GetMailTime(string email);
 
         bool ControlIsEmailConfirmed(string email);
+
+        bool ConfirmMail(string email, string mailCode);
+
     }
 }

@@ -1,17 +1,18 @@
 ﻿using TaskList.Models.ViewModels;
+using TaskList.Models.ViewModels.UserViewModels;
 using Task = TaskList.Models.Task;
 
 namespace TaskList.Business.Abstract
 {
     public interface ITaskService
     {
-        bool AddTask(Task task);
+        ResponseModel AddTask(Task task);
 
-        bool UpdateTask(Task task);
+        ResponseModel UpdateTask(Task task);
 
-        bool DoneTask(Guid TaskId);
+        ResponseModel DoneTask(Guid TaskId);
 
-        bool DeleteTask(Guid TaskId);
+        ResponseModel DeleteTask(Guid TaskId);
 
         List<JoinedTask> GetUsersTasks(Guid id);
 
@@ -20,5 +21,6 @@ namespace TaskList.Business.Abstract
         List<JoinedTask> GetAllTasks();
 
         bool ControlUndoneTask(Guid AssingedById);
+        List<Report>? GetReports();
     }
 }

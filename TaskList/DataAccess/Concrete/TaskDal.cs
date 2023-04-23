@@ -1,7 +1,10 @@
-﻿using System.Data;
+﻿using NuGet.Protocol.Plugins;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using TaskList.Interfaces;
 using TaskList.Models.ViewModels;
+using TaskList.Models.ViewModels.UserViewModels;
 using Task = TaskList.Models.Task;
 
 namespace TaskList.DataAccess.Concrete
@@ -202,6 +205,35 @@ namespace TaskList.DataAccess.Concrete
             }
         } // test edildi
 
+        public List<Report>? GetReports()
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                List<Report> reports = new List<Report>();
+                try
+                {
+                    connection.Open();
+                    var command = new SqlCommand("SELECT u.name, COUNT(CASE WHEN is_done = 1 THEN 1 END) , COUNT(CASE WHEN is_done = 0 THEN 1 END) FROM tasks JOIN users AS u ON assigned_by_id = u.id GROUP BY u.name", connection);
+                    var reader = command.ExecuteReader();
+                    JoinedTask task = new();
+                    while (reader.Read())
+                    {
+                        Report report = new Report();
+                        report.Name = reader.GetString(0);
+                        report.Done = reader.GetInt32(1);
+                        report.Undone = reader.GetInt32(2);
+                        reports.Add(report);
+                    }
+                    return reports;
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+        }
+
+
         public JoinedTask GetTask(Guid TaskId)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
@@ -226,6 +258,43 @@ namespace TaskList.DataAccess.Concrete
                     task.IsActive = reader.GetBoolean(8);
 
                     command.Parameters.AddWithValue("@id", TaskId);
+                    return task;
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public Task GetTaskById(Guid taskId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "SELECT id, assigner_id, assigned_by_id, [task_name], [task_description], [created_on], [updated_on], [is_done], [is_active] FROM tasks WHERE id = @id",
+                            connection);
+                    command.Parameters.AddWithValue("@id", taskId);
+
+                    var reader = command.ExecuteReader();
+
+                    reader.Read();
+
+                    Task task = new();
+                    task.Id = reader.GetGuid(0);
+                    task.AssingerId = reader.GetGuid(1);
+                    task.AssignedById = reader.GetGuid(2);
+                    task.TaskName = reader.GetString(3);
+                    task.TaskDescription = reader.GetString(4);
+                    task.CreatedOn = reader.GetDateTime(5);
+                    task.UpdatedOn = reader.GetDateTime(6);
+                    task.IsDone = reader.GetBoolean(7);
+                    task.IsActive = reader.GetBoolean(8);
+
                     return task;
                 }
                 catch (Exception e)
@@ -306,7 +375,7 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
-        
+
     }
     //test edilmedi
 }
