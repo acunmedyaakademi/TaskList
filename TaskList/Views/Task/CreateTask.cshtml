@@ -1,7 +1,7 @@
 ﻿<div class="container">
     <div class="row">
         <div class="col-md-11" style="margin:auto">
-            <form asp-action="createtask" asp-controller="task" method="post" class="card">
+            <form asp-action="CreateTask" asp-controller="Task" method="post" class="card">
                 <div class="card-header">
                     <h4 class="card-title">Görev Oluştur</h4>
                 </div>
@@ -12,8 +12,9 @@
                                 <div class="col-md-11">
                                     <div class="mb-3">
                                         <label class="form-label">Görev Başlığı <span class="form-label-description">56/100</span></label>
-                                        <input class="form-control" name="TaskName" rows="6" placeholder="Görevi başlığını giriniz.."></input>
+                                        <input class="form-control" name="TaskName" rows="6" placeholder="Görevi başlığını giriniz.."/>
                                     </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Görev <span class="form-label-description">56/100</span></label>
                                         <textarea class="form-control" name="TaskDescription" rows="6" placeholder="Görevi giriniz.."></textarea>
@@ -25,6 +26,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                                             Görevi oluştur
                                         </button>
+                    
                                     </div>
                                 </div>
                             </div>
