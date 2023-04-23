@@ -1,4 +1,5 @@
 ﻿using TaskList.Models.ViewModels;
+using TaskList.Models.ViewModels.UserViewModels;
 using Task = TaskList.Models.Task;
 
 namespace TaskList.Business.Abstract
@@ -20,5 +21,6 @@ namespace TaskList.Business.Abstract
         List<JoinedTask> GetAllTasks();
 
         bool ControlUndoneTask(Guid AssingedById);
+        List<Report>? GetReports();
     }
 }

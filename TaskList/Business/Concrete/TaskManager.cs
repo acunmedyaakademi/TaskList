@@ -4,6 +4,7 @@ using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
 using TaskList.Models.ViewModels;
+using TaskList.Models.ViewModels.UserViewModels;
 using TestApp.Core;
 using Task = TaskList.Models.Task;
 
@@ -107,6 +108,11 @@ namespace TaskList.Business.Concrete
         public List<JoinedTask> GetGivenTasks(Guid id)
         {
             return _taskDal.GetGivenTasks(id);
+        }
+
+        public List<Report>? GetReports()
+        {
+            return _taskDal.GetReports();
         }
 
         public List<JoinedTask> GetUsersTasks(Guid id)

@@ -23,5 +23,9 @@ namespace TaskList.Controllers
         {
             return View();
         }
+        public IActionResult Users()
+        {
+            return View();
+        }
     }
 }
