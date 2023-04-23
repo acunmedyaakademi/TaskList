@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskList.Business.Abstract;
+using TaskList.Models.ViewModels;
 using Task = TaskList.Models.Task;
 
 namespace TaskList.Controllers
@@ -21,12 +22,21 @@ namespace TaskList.Controllers
             return View(_taskService.GetTaskById(id));
         }
         public IActionResult DeleteTask(Guid TaskId)
+        public IActionResult CreateTask()
+        {
+            return View();
+        }
+        public IActionResult DeleteTask(string TaskId)
         {
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
 
             _taskService.DeleteTask(TaskId);
+            ResponseModel response = _taskService.DeleteTask(new Guid(TaskId));
+            if (response.Success)
             return View();
+
+            return Content("hata");
         }
         public IActionResult AssignedTasks()
         {
@@ -65,12 +75,13 @@ namespace TaskList.Controllers
             return View();
         }
 
-        public IActionResult UpdateTask()
+        public IActionResult UpdateTask(string id)
         {
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
 
             return View();
+            return View(_taskService.GetTask(new Guid(id)));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
