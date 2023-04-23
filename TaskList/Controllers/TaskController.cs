@@ -71,14 +71,19 @@ namespace TaskList.Controllers
             Task task = new Task();
             task.Id = Guid.NewGuid();
             task.AssingerId = new Guid(HttpContext.Session.GetString("LoginId"));
-            task.AssignedById = new Guid(HttpContext.Session.GetString("alan")); //çek;
+            task.AssignedById = new Guid(HttpContext.Session.GetString("alan")); 
             task.IsDone = false;
             task.CreatedOn = DateTime.Now;
             task.UpdatedOn = DateTime.Now;
             task.IsActive = true;
             task.TaskDescription= taskModel.TaskDescription;
             task.TaskName = taskModel.TaskName;
-            _taskService.AddTask(task);
+            ResponseModel response = _taskService.AddTask(task);
+            if (response.Success)
+            {
+                RedirectToAction("users","user");
+            }
+            ViewBag.Create = response.Message;
             return View();
         }
 
