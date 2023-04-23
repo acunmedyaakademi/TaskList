@@ -22,5 +22,7 @@ namespace TaskList.Business.Abstract
 
         bool ControlUndoneTask(Guid AssingedById);
         List<Report>? GetReports();
+
+        Task GetTaskById(Guid taskId);
     }
 }

@@ -13,9 +13,10 @@ namespace TaskList.Controllers
             _taskService = taskService;
         }
 
-        public IActionResult TaskDetail()
+        public IActionResult TaskDetail(Guid id)
         {
-            return View();
+
+            return View(_taskService.GetTaskById(id));
         }
         public IActionResult CreateTask()
         {
