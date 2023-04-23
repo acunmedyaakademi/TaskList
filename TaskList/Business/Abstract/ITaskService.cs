@@ -21,6 +21,7 @@ namespace TaskList.Business.Abstract
         List<JoinedTask> GetAllTasks();
 
         bool ControlUndoneTask(Guid AssingedById);
+
         List<Report>? GetReports();
 
         Task GetTaskById(Guid taskId);

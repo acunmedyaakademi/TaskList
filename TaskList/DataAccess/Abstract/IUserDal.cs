@@ -7,6 +7,8 @@ namespace TaskList.Interfaces
     {
         SessionModel? Login(LoginUser loginUser);
 
+        List<GetUserModel> GetUsers();
+
         bool AddUser(AddUser addUser);
 
         User GetUserById(Guid id);

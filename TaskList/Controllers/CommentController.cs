@@ -18,12 +18,18 @@ namespace TaskList.Controllers
 
         public IActionResult CreateComment(Comment comment)
         {
+            if (HttpContext.Session.GetString("LoginName") == null)
+                return RedirectToAction("login", "account");
+
             _commentService.AddComment(comment);
             return View();
         }
 
         public IActionResult DeleteComment(Guid commentId)
         {
+            if (HttpContext.Session.GetString("LoginName") == null)
+                return RedirectToAction("login", "account");
+
             _commentService.DeleteComment(commentId);
             return View();
         }

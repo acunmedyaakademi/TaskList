@@ -145,5 +145,10 @@ namespace TaskList.Business.Concrete
         {
             return _userDal.ConfirmMail(email, mailCode);
         }
+
+        public List<GetUserModel> GetUsers()
+        {
+            return _userDal.GetUsers();
+        }
     }
 }
