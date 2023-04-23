@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TaskList.Models;
+﻿using TaskList.Models;
 using TaskList.Models.ViewModels.CommentViewModels;
 
 namespace TaskList.Interfaces

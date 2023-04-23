@@ -13,7 +13,7 @@ namespace TaskList.Business.Concrete
     {
         readonly IUserDal _userDal;
         readonly IHttpContextAccessor _accessor;
-        private readonly MailKitService _mailKitService = new MailKitService();
+        private readonly MailKitService _mailService = new MailKitService();
         private readonly CodeGenerator _codeGenerator = new CodeGenerator();
 
         public UserManager(IUserDal userDal, IHttpContextAccessor accessor)
@@ -31,7 +31,9 @@ namespace TaskList.Business.Concrete
                 {
                     if (_userDal.AddUser(addUser))
                     {
-                        return _userDal.SetMailCode(addUser.Email, _codeGenerator.RandomPassword(6));
+                        string code = _codeGenerator.RandomPassword(6);
+                        if(_userDal.SetMailCode(addUser.Email, code)) 
+                            return _mailService.SendMailPassword(addUser.Email, code);
                     }
                 }
             }
@@ -104,12 +106,11 @@ namespace TaskList.Business.Concrete
             if(ControlMailTime(Email))
             {
                 string code = _codeGenerator.RandomPassword(6);
-                _mailKitService.SendMailPassword(Email, code);
+                _mailService.SendMailPassword(Email, code);
                 return true;
             }
             return false;
         }
-
 
     }
 }

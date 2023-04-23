@@ -6,7 +6,7 @@ namespace TestApp.Core
 {
     public class MailKitService
     {
-        public void SendMailPassword(string mailTo, string code)
+        public bool SendMailPassword(string mailTo, string code)
         {
             var emailMessage = new MimeMessage();
             //attach =  attach.Replace("\\", "//");
@@ -31,6 +31,7 @@ namespace TestApp.Core
                 smtp.Disconnect(true);
             }
 
+            return true;
         }
 
         public void SendMailList(List<string> mailTo, string message)
