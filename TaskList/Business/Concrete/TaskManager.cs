@@ -115,6 +115,11 @@ namespace TaskList.Business.Concrete
             return _taskDal.GetReports();
         }
 
+        public JoinedTask GetTask(Guid TaskId)
+        {
+            return _taskDal.GetTask(TaskId);
+        }
+
         public Task GetTaskById(Guid taskId)
         {
             return _taskDal.GetTaskById(taskId);

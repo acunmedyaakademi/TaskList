@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskList.Business.Abstract;
+using TaskList.Models.ViewModels;
 using Task = TaskList.Models.Task;
 
 namespace TaskList.Controllers
@@ -22,10 +23,13 @@ namespace TaskList.Controllers
         {
             return View();
         }
-        public IActionResult DeleteTask(Guid TaskId)
+        public IActionResult DeleteTask(string TaskId)
         {
-            _taskService.DeleteTask(TaskId);
+            ResponseModel response = _taskService.DeleteTask(new Guid(TaskId));
+            if (response.Success)
             return View();
+
+            return Content("hata");
         }
         public IActionResult AssignedTasks()
         {
@@ -40,9 +44,9 @@ namespace TaskList.Controllers
             return View();
         }
 
-        public IActionResult UpdateTask()
+        public IActionResult UpdateTask(string id)
         {
-            return View();
+            return View(_taskService.GetTask(new Guid(id)));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
