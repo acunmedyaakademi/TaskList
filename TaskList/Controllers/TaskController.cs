@@ -37,5 +37,8 @@ namespace TaskList.Controllers
             _taskService.DeleteTask(TaskId);
             return View();
         }
+        public IActionResult AssignedTasks() { 
+            return View();
+        }
     }
 }
