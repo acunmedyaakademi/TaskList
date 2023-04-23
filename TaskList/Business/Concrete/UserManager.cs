@@ -8,14 +8,17 @@ namespace TaskList.Business.Concrete
     public class UserManager : IUserService
     {
         readonly IUserDal _userDal;
+        readonly IHttpContextAccessor _accessor;
 
-        public UserManager(IUserDal userDal)
+        public UserManager(IUserDal userDal, IHttpContextAccessor accessor)
         {
             _userDal = userDal;
+            _accessor = accessor;
+
         }
 
         public bool AddUser(AddUser addUser)
-        {
+        {   
             _userDal.AddUser(addUser);
             return true;
         }

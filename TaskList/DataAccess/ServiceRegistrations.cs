@@ -13,7 +13,6 @@ namespace TaskList.DataAccess
             services.AddScoped<IUserDal,UserDal>();
             services.AddScoped<ITaskDal, TaskDal>();
             services.AddScoped<ICommentDal, CommentDal>();
-
             services.AddScoped<IUserService, UserManager>();
             services.AddScoped<ITaskService, TaskManager>();
             services.AddScoped<ICommentService, CommentManager>();

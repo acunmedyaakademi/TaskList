@@ -8,9 +8,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddReCaptcha(builder.Configuration.GetSection("ReCaptcha"));
 
+builder.Services.AddDataAccesLayerService();
+
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddDataAccesLayerService();
 
 builder.Services.AddSession(options =>
 {
