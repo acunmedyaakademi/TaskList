@@ -13,6 +13,6 @@ namespace TaskList.Models.ViewModels.UserViewModels
         [MinLength(3)]
         public string Password { get; set; }
         [Required]
-        public string Mail_Code { get; set; }
+        public string MailCode { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace TaskList.Business.Concrete
                     if (_userDal.AddUser(addUser))
                     {
                         string code = _codeGenerator.RandomPassword(6);
-                        if(_userDal.SetMailCode(addUser.Email, code)) 
+                        if (_userDal.SetMailCode(addUser.Email, code))
                             return _mailService.SendMailPassword(addUser.Email, code);
                     }
                 }
@@ -42,7 +42,7 @@ namespace TaskList.Business.Concrete
 
         public bool ControlIsEmailConfirmed(string email)
         {
-            if(CheckString.Check(email))
+            if (CheckString.Check(email))
             {
                 return _userDal.ControlIsEmailConfirmed(email);
             }
@@ -55,7 +55,7 @@ namespace TaskList.Business.Concrete
             {
                 return false;
             }
-                if (_userDal.GetMailTime(email) == null)
+            if (_userDal.GetMailTime(email) == null)
             {
                 return false;
             }
@@ -69,7 +69,7 @@ namespace TaskList.Business.Concrete
                 }
                 return true;
             }
-            
+
         }
 
         public User GetUserById(string id)
@@ -93,22 +93,22 @@ namespace TaskList.Business.Concrete
 
         public bool ResetPassword(ResetPassword resetPassword)
         {
-            if (CheckString.Check(resetPassword.Email) && CheckString.Check(resetPassword.Password) && CheckString.Check(resetPassword.Mail_Code))
-            {
+            if (CheckString.Check(resetPassword.Email) && CheckString.Check(resetPassword.Password) && CheckString.Check(resetPassword.MailCode))
+
                 return _userDal.ResetPassword(resetPassword);
-            }
+
             return false;
         }
 
         public bool SendMailCode(string Email)
         {
-            if(CheckString.Check(Email))
-            if(ControlMailTime(Email))
-            {
-                string code = _codeGenerator.RandomPassword(6);
-                _mailService.SendMailPassword(Email, code);
-                return true;
-            }
+            if (CheckString.Check(Email))
+                if (ControlMailTime(Email))
+                {
+                    string code = _codeGenerator.RandomPassword(6);
+                    _mailService.SendMailPassword(Email, code);
+                    return true;
+                }
             return false;
         }
 

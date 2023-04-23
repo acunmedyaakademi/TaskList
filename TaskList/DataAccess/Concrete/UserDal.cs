@@ -83,7 +83,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "select mail_send_date, mail_confirmed, is_active from users where email = @email and is_actve = true",
+                            "select mail_send_date, mail_confirmed, is_active from users where email = @email and is_acitve = true",
                             connection);
 
                     command.Parameters.AddWithValue("@email", email);
@@ -230,7 +230,7 @@ namespace TaskList.DataAccess.Concrete
                     var command = new SqlCommand("UPDATE users SET password = @password WHERE email = @email and mail_code = @mail_Code",connection);
 
                     command.Parameters.AddWithValue("@email", resetPassword.Email);
-                    command.Parameters.AddWithValue("@mail_Code", resetPassword.Mail_Code);
+                    command.Parameters.AddWithValue("@mail_Code", resetPassword.MailCode);
                     command.Parameters.AddWithValue("@password", resetPassword.Password);
 
                     int a = command.ExecuteNonQuery();

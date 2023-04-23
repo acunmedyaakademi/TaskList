@@ -85,18 +85,15 @@ namespace TaskList.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(ResetPassword model)
         {
-            //todo recaptcha
+            model.Email = HttpContext.Session.GetString("ForgetMail");
 
             if (ModelState.IsValid)
-            {
-                //todo bussines bitince mail burada atılıp modele işlenecek
-
+            {              
                 if (_userService.ResetPassword(model))
                 {
                     //todo burada login yapılabilir 
 
                     return RedirectToAction("login", "account");
-
                 }
             }
             ViewBag.Reset = "Şifre değiştirilemedi, lütfen tekrar deneyiniz";
@@ -115,6 +112,7 @@ namespace TaskList.Controllers
             //todo recaptcha
             if (_userService.SendMailCode(Email))
             {
+                HttpContext.Session.SetString("ForgetMail",Email);
                 return RedirectToAction("ResetPassword", "Account");
             }
             
