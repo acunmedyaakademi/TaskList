@@ -2,42 +2,66 @@
 using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
+using TaskList.Models.ViewModels;
 using TaskList.Models.ViewModels.CommentViewModels;
+using TestApp.Core;
 
 namespace TaskList.Business.Concrete
 {
     public class CommentManager : ICommentService
     {
         readonly ICommentDal _commentDal;
+        readonly IUserDal _userDal;
+        readonly ITaskDal _taskDal;
         readonly IHttpContextAccessor _accessor;
+        MailKitService _mailKitService = new();
 
-        public CommentManager(ICommentDal commentDal, IHttpContextAccessor accessor)
+        public CommentManager(ICommentDal commentDal, IHttpContextAccessor accessor, IUserDal userDal, ITaskDal taskDal)
         {
             _commentDal = commentDal;
             _accessor = accessor;
+            _userDal = userDal;
+            _taskDal = taskDal;
         }
 
-        public bool AddComment(Comment comment)
+        public ResponseModel AddComment(Comment comment)
         {
+            ResponseModel response = new();
+            response.Success = false;
+
             if (_accessor.HttpContext.Session.GetString("LoginId") == comment.UserId.ToString())
             {
                 if (CheckString.Check(comment.TheComment))
-                    return _commentDal.AddComment(comment);
-                return false;
+                {
+                    if (_commentDal.AddComment(comment))
+                    {
+                        User user = _userDal.GetUserById(_taskDal.GetTaskById(comment.TaskId).AssignedById);
+                        response.Success = _mailKitService.SendMailPassword(user.Email, "size yorum geldi"); //todo mail send
+                        return response;
+                    }
+                    response.Message = "Kullanıcı Eklenemedi";
+                    return response;
+                }
+                response.Message = "Özel Karakterler Kullanılamaz";
+                return response;
             }
-            return false;
-
+            response.Message = "Onu yapma";
+            return response;
         }
 
-        public bool DeleteComment(Guid CommentId)
+        public ResponseModel DeleteComment(Guid CommentId)
         {
+            ResponseModel response = new();
+            response.Success = false;
             Comment comment = _commentDal.GetCommentbyId(CommentId);
-            if (comment == null) return false;
+
             if (_accessor.HttpContext.Session.GetString("LoginId") == comment.UserId.ToString())
             {
-                return _commentDal.DeleteComment(CommentId);
+                response.Success = _commentDal.DeleteComment(CommentId);
+                return response;
             }
-            return false;
+            response.Message = "Yorum Silinemedi";
+            return response;
         }
 
         public Comment? GetComment(Guid UserId, Guid TaskId)

@@ -4,6 +4,7 @@ using TaskList.Business.Abstract;
 using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
+using TaskList.Models.ViewModels;
 using TaskList.Models.ViewModels.UserViewModels;
 using TestApp.Core;
 
@@ -22,8 +23,11 @@ namespace TaskList.Business.Concrete
             _accessor = accessor;
         }
 
-        public bool Register(AddUser addUser)
+        public ResponseModel Register(AddUser addUser)
         {
+            ResponseModel response = new();
+            response.Success = false;
+
             if (CheckString.Check(addUser.Email) && CheckString.Check(addUser.Password) && CheckString.Check(addUser.Name))
             {
                 User user = _userDal.GetUserByMail(addUser.Email);
@@ -33,11 +37,21 @@ namespace TaskList.Business.Concrete
                     {
                         string code = _codeGenerator.RandomPassword(6);
                         if (_userDal.SetMailCode(addUser.Email, code))
-                            return _mailService.SendMailPassword(addUser.Email, code);
+                        {
+                            response.Success = _mailService.SendMailPassword(addUser.Email, code);
+                            return response;
+                        }
+                        response.Message = "Bir hata oluştu"; //todo buraya bi ara bak
+                        return response;
                     }
+                    response.Message = "kullanıcı eklenemedi";
+                    return response;
                 }
+                response.Message = "Bu kullanıcı zaten var";
+                return response;
             }
-            return false;
+            response.Message = "özel karakterler kullanılamaz";
+            return response;
         }
 
         public bool ControlIsEmailConfirmed(string email)
@@ -72,7 +86,7 @@ namespace TaskList.Business.Concrete
 
         }
 
-        public User GetUserById(string id)
+        public User GetUserById(Guid id)
         {
             return _userDal.GetUserById(id);
         }
@@ -91,26 +105,45 @@ namespace TaskList.Business.Concrete
             return null;
         }
 
-        public bool ResetPassword(ResetPassword resetPassword)
+        public ResponseModel ResetPassword(ResetPassword resetPassword)
         {
-            if (CheckString.Check(resetPassword.Email) && CheckString.Check(resetPassword.Password) && CheckString.Check(resetPassword.MailCode))
+            ResponseModel response = new();
+            response.Success = false;
 
-                return _userDal.ResetPassword(resetPassword);
-
-            return false;
+            if (CheckString.Check(resetPassword.Email)
+                && CheckString.Check(resetPassword.Password)
+                && CheckString.Check(resetPassword.MailCode))
+            {
+                response.Success = _userDal.ResetPassword(resetPassword);
+                return response;
+            }
+            response.Message = "özel karakterler kullanılamaz";
+            return response;
         }
 
-        public bool SendMailCode(string Email)
+        public ResponseModel SendMailCode(string Email)
         {
+            ResponseModel response = new();
+            response.Success = false;
+
             if (CheckString.Check(Email))
+            {
                 if (ControlMailTime(Email))
                 {
                     string code = _codeGenerator.RandomPassword(6);
-                    _mailService.SendMailPassword(Email, code);
-                    return true;
+                    response.Success = _mailService.SendMailPassword(Email, code);
+                    return response;
                 }
-            return false;
+                response.Message = "Az önce size onay kodu gönderdik, bir kaç dakika sonra tekrar deneyebilirsiniz";
+                return response;
+            }
+            response.Message = "özel karakterler kullanılamaz";
+            return response;
         }
 
+        public bool ConfirmMail(string email, string mailCode)
+        {
+            return _userDal.ConfirmMail(email, mailCode);
+        }
     }
 }

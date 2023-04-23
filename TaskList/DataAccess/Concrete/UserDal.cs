@@ -43,6 +43,35 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
+        public bool ConfirmMail(string email, string mailCode)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue)) //TODO:  sayackonulacak
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new SqlCommand("UPDATE users SET mail_confirmed = 1 WHERE email = @email and [mail_code] = @mailCode", connection);
+
+                    command.Parameters.AddWithValue("@email", email);
+                    command.Parameters.AddWithValue("@mailCode", mailCode);
+
+                    int a = command.ExecuteNonQuery();
+
+                    if (a == 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
+
         public bool ControlIsEmailConfirmed(string email)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
@@ -106,7 +135,7 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
-        public User GetUserById(string id)
+        public User GetUserById(Guid id)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
             {

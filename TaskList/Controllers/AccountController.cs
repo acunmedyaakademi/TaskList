@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MessagePack.Resolvers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using TaskList.Business.Abstract;
 using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
+using TaskList.Models.ViewModels;
 using TaskList.Models.ViewModels.UserViewModels;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
@@ -21,7 +23,9 @@ namespace TaskList.Controllers
 
         public IActionResult Login()
         {
-            
+           if(HttpContext.Session.GetString("LoginName") != null)
+                return RedirectToAction("Index","home");
+
             return View();
         }
 
@@ -29,6 +33,9 @@ namespace TaskList.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginUser loginUser)
         {
+            if (HttpContext.Session.GetString("LoginName") != null)
+                return RedirectToAction("Index", "home");
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Login = "Kullanıcı Adı veya Şifre Yanlış";
@@ -39,7 +46,7 @@ namespace TaskList.Controllers
             {
                 if (!model.MailConfirmed)
                 {
-                    return Content("Confirm Mail !");
+                    return RedirectToAction("ConfirmMail", "account");//todo burayı düzeltt
                 }
                 HttpContext.Session.SetString("LoginId", model.Id.ToString());
                 HttpContext.Session.SetString("LoginName", model.Name);
@@ -60,19 +67,26 @@ namespace TaskList.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(AddUser user)
         {
+            if (HttpContext.Session.GetString("LoginName") != null)
+                return RedirectToAction("Index", "home");
             //todo recaptcha
-           
+
             if (ModelState.IsValid)
             {
-                //todo bussines bitince mail burada atılıp modele işlenecek
+                ResponseModel response = _userService.Register(user);
 
-                if (_userService.Register(user))
+                if (response.Success)
                 {
-                    return RedirectToAction("login", "account");
+                    HttpContext.Session.SetString("ConfirmMail",user.Email);
+                    return RedirectToAction("ConfirmMail", "account");
 
                 }
+
+                ViewBag.Register = response.Message;
+                return View();
             }
-            ViewBag.Register = "Kullanıcı eklenemedi";
+
+            ViewBag.Register = "model valid değil";
             return View();
         }
 
@@ -85,18 +99,25 @@ namespace TaskList.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(ResetPassword model)
         {
+            if (HttpContext.Session.GetString("LoginName") != null)
+                return RedirectToAction("Index", "home");
+
             model.Email = HttpContext.Session.GetString("ForgetMail");
 
             if (ModelState.IsValid)
-            {              
-                if (_userService.ResetPassword(model))
+            {
+                ResponseModel response = _userService.ResetPassword(model);
+
+                if (response.Success)
                 {
                     //todo burada login yapılabilir 
 
                     return RedirectToAction("login", "account");
                 }
+                ViewBag.Reset = response.Message;
+                return View();
             }
-            ViewBag.Reset = "Şifre değiştirilemedi, lütfen tekrar deneyiniz";
+            ViewBag.Reset = "model valid değil";
             return View();
         }
 
@@ -109,14 +130,23 @@ namespace TaskList.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ForgetPassword(string Email)
         {
-            //todo recaptcha
-            if (_userService.SendMailCode(Email))
+            if (HttpContext.Session.GetString("LoginName") != null)
+                return RedirectToAction("Index", "home");
+
+            if (ModelState.IsValid)
             {
-                HttpContext.Session.SetString("ForgetMail",Email);
-                return RedirectToAction("ResetPassword", "Account");
+                ResponseModel response = _userService.SendMailCode(Email);
+                //todo recaptcha
+                if (response.Success)
+                {
+                    HttpContext.Session.SetString("ForgetMail", Email);
+                    return RedirectToAction("ResetPassword", "Account");
+                }
+
+                ViewBag.Forget = response.Message;
+                return View();
             }
-            
-            ViewBag.Reset = "Mail gonderilemedi!";
+            ViewBag.Forget = "model valid değil";
             return View();
         }
 
@@ -127,7 +157,24 @@ namespace TaskList.Controllers
             HttpContext.Session.Remove("LoginName");
             HttpContext.Session.Remove("LoginMail");
             return RedirectToAction("login", "account");
+        }
 
+        public IActionResult ConfirmMail()
+        {
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmMail(string mailCode)
+        {
+            string mail = HttpContext.Session.GetString("ConfirmMail");
+            if (_userService.ConfirmMail(mail, mailCode))
+            {
+                return RedirectToAction("login","account");
+            }
+            return View();
         }
     }
 }

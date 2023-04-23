@@ -5,13 +5,13 @@ namespace TaskList.Business.Abstract
 {
     public interface ITaskService
     {
-        bool AddTask(Task task);
+        ResponseModel AddTask(Task task);
 
-        bool UpdateTask(Task task);
+        ResponseModel UpdateTask(Task task);
 
-        bool DoneTask(Guid TaskId);
+        ResponseModel DoneTask(Guid TaskId);
 
-        bool DeleteTask(Guid TaskId);
+        ResponseModel DeleteTask(Guid TaskId);
 
         List<JoinedTask> GetUsersTasks(Guid id);
 

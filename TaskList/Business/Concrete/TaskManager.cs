@@ -4,6 +4,7 @@ using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
 using TaskList.Models.ViewModels;
+using TestApp.Core;
 using Task = TaskList.Models.Task;
 
 namespace TaskList.Business.Concrete
@@ -11,28 +12,47 @@ namespace TaskList.Business.Concrete
     public class TaskManager : ITaskService
     {
         readonly ITaskDal _taskDal;
+        readonly IUserDal _userDal;
         readonly IHttpContextAccessor _accessor;
+        MailKitService _mailKitService = new();
 
-        public TaskManager(ITaskDal taskDal, IHttpContextAccessor accessor)
+
+        public TaskManager(ITaskDal taskDal, IHttpContextAccessor accessor, IUserDal userDal)
         {
             _taskDal = taskDal;
             _accessor = accessor;
+            _userDal = userDal;
         }
 
-        public bool AddTask(Task task)
+        public ResponseModel AddTask(Task task)
         {
-            if(CheckString.Check(task.TaskDescription) && CheckString.Check(task.TaskName))
+            ResponseModel response = new();
+            response.Success = false;
+
+            if (CheckString.Check(task.TaskDescription) && CheckString.Check(task.TaskName))
             {
                 Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
                 if (task.AssingerId == userId)
                 {
                     if (ControlUndoneTask(task.AssignedById))
                     {
-                        return _taskDal.AddTask(task);
+                        if (_taskDal.AddTask(task))
+                        {
+                            User user = _userDal.GetUserById(task.AssignedById); //todo semantik
+                            response.Success = _mailKitService.SendMailPassword(user.Email, task.TaskName + "- size görev geldi");
+                            return response;
+                        }
+                        response.Message = "Görev eklenirken bir hata oluştu";
+                        return response;
                     }
+                    response.Message = "Bu kullanıcın henüz bitirmediği bir görev var, yeni görev verilemez";
+                    return response;
                 }
+                response.Message = "onu yapma artık";
+                return response;
             }
-            return false;
+            response.Message = "özel karakter kullanılamaz";
+            return response;
         }
 
         public bool ControlUndoneTask(Guid AssingedById)
@@ -40,26 +60,43 @@ namespace TaskList.Business.Concrete
             return _taskDal.ControlUndoneTask(AssingedById); 
         }
 
-        public bool DeleteTask(Guid TaskId)
+        public ResponseModel DeleteTask(Guid TaskId)
         {
+            ResponseModel response = new();
+            response.Success = false;
+
             string userName = _accessor.HttpContext.Session.GetString("LoginName");
             JoinedTask task = _taskDal.GetTask(TaskId);
             if (task.AssingerName == userName)
             {
-                return _taskDal.DeleteTask(TaskId);
+                response.Success = _taskDal.DeleteTask(TaskId);
+                return response;
             }
-            return false;
+            response.Message = "onu yapma artık";
+            return response;
         }
 
-        public bool DoneTask(Guid TaskId)
+        public ResponseModel DoneTask(Guid TaskId)
         {
+            ResponseModel response = new();
+            response.Success = false;
+
             string userName = _accessor.HttpContext.Session.GetString("LoginName");
             JoinedTask task = _taskDal.GetTask(TaskId);
             if (task.AssingerName == userName)
-            { 
-                return _taskDal.DoneTask(TaskId);
+            {
+                if (_taskDal.DoneTask(TaskId))
+                {
+                    Task theTask = _taskDal.GetTaskById(TaskId); //todo mail controol
+                    User user = _userDal.GetUserById(theTask.AssignedById);
+                    response.Success = _mailKitService.SendMailPassword(user.Email, task.TaskName + " " + "verdiğiniz görev bitti");
+                    return response;
+                }
+                response.Message = "işlem gerçekleşmedi";
+                return response;
             }
-            return false;
+            response.Message = "onu yapma";
+            return response;
         }
 
         public List<JoinedTask> GetAllTasks()
@@ -77,17 +114,24 @@ namespace TaskList.Business.Concrete
             return _taskDal.GetUsersTasks(id);
         }
 
-        public bool UpdateTask(Task task)
+        public ResponseModel UpdateTask(Task task)
         {
+            ResponseModel response = new();
+            response.Success = false;
+
             if (CheckString.Check(task.TaskDescription) && CheckString.Check(task.TaskName))
             {
                 Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
                 if (task.AssingerId == userId)
                 {
-                    return _taskDal.UpdateTask(task);
+                    response.Success = _taskDal.UpdateTask(task);
+                    return response;
                 }
+                response.Message = "onu yapma";
+                return response;
             }
-            return false;
+            response.Message = "özel karakterler kullanılamaz";
+            return response;
         }
     }
 }

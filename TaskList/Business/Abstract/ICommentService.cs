@@ -1,5 +1,6 @@
 ﻿using TaskList.Models.ViewModels.CommentViewModels;
 using TaskList.Models;
+using TaskList.Models.ViewModels;
 
 namespace TaskList.Business.Abstract
 {
@@ -7,9 +8,9 @@ namespace TaskList.Business.Abstract
     {
         List<JoinedComment> GetComments(Guid TaskId);
 
-        bool DeleteComment(Guid CommentId);
+        ResponseModel DeleteComment(Guid CommentId);
 
-        bool AddComment(Comment comment);
+        ResponseModel AddComment(Comment comment);
 
         Comment? GetComment(Guid UserId, Guid TaskId);
 
