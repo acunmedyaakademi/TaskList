@@ -8,10 +8,12 @@ namespace TaskList.Business.Concrete
     public class CommentManager : ICommentService
     {
         readonly ICommentDal _commentDal;
+        readonly IHttpContextAccessor _accessor;
 
-        public CommentManager(ICommentDal commentDal)
+        public CommentManager(ICommentDal commentDal, IHttpContextAccessor accessor)
         {
             _commentDal = commentDal;
+            _accessor = accessor;
         }
 
         public bool AddComment(Comment comment)

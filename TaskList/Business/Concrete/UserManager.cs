@@ -1,7 +1,9 @@
-﻿using TaskList.Business.Abstract;
+﻿using filmblogu.Core;
+using TaskList.Business.Abstract;
 using TaskList.Interfaces;
 using TaskList.Models;
 using TaskList.Models.ViewModels.UserViewModels;
+using TestApp.Core;
 
 namespace TaskList.Business.Concrete
 {
@@ -9,18 +11,23 @@ namespace TaskList.Business.Concrete
     {
         readonly IUserDal _userDal;
         readonly IHttpContextAccessor _accessor;
+        private readonly MailKitService _mailKitService = new MailKitService();
+        private readonly CodeGenerator _codeGenerator = new CodeGenerator();
 
         public UserManager(IUserDal userDal, IHttpContextAccessor accessor)
         {
             _userDal = userDal;
             _accessor = accessor;
-
         }
 
         public bool AddUser(AddUser addUser)
         {   
-            _userDal.AddUser(addUser);
-            return true;
+            User user = _userDal.GetUserByMail(addUser.Email);
+            if(user == null)
+            {
+                return _userDal.AddUser(addUser);
+            }
+            return false;
         }
 
         public bool ControlIsEmailConfirmed(string email)
@@ -66,6 +73,17 @@ namespace TaskList.Business.Concrete
         {
             _userDal.ResetPassword(resetPassword);
             return true;
+        }
+
+        public bool SendResetCode(string Email)
+        {
+            if(ControlMailTime(Email))
+            {
+                string code = _codeGenerator.RandomPassword(10);
+                _mailKitService.SendMailPassword(Email, code);
+                return true;
+            }
+            return false;
         }
     }
 }

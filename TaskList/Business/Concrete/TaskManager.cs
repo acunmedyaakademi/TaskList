@@ -1,5 +1,7 @@
-﻿using TaskList.Business.Abstract;
+﻿using System.Threading.Tasks;
+using TaskList.Business.Abstract;
 using TaskList.Interfaces;
+using TaskList.Models;
 using TaskList.Models.ViewModels;
 using Task = TaskList.Models.Task;
 
@@ -8,19 +10,24 @@ namespace TaskList.Business.Concrete
     public class TaskManager : ITaskService
     {
         readonly ITaskDal _taskDal;
+        readonly IHttpContextAccessor _accessor;
 
-        public TaskManager(ITaskDal taskDal)
+        public TaskManager(ITaskDal taskDal, IHttpContextAccessor accessor)
         {
             _taskDal = taskDal;
+            _accessor = accessor;
         }
-
 
         public bool AddTask(Task task)
         {
-            if(ControlUndoneTask(task.AssignedById))
+            Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
+            if (task.AssingerId == userId)
             {
-                _taskDal.AddTask(task);
-                return true;
+                if (ControlUndoneTask(task.AssignedById))
+                {
+                    return _taskDal.AddTask(task);
+                }
+                return false;
             }
             return false;
 
@@ -33,14 +40,24 @@ namespace TaskList.Business.Concrete
 
         public bool DeleteTask(Guid TaskId)
         {
-            _taskDal.DeleteTask(TaskId);
-            return true;
+            string userName = _accessor.HttpContext.Session.GetString("LoginName");
+            JoinedTask task = _taskDal.GetTask(TaskId);
+            if (task.AssingerName == userName)
+            {
+                return _taskDal.DeleteTask(TaskId);
+            }
+            return false;
         }
 
         public bool DoneTask(Guid TaskId)
         {
-            _taskDal.DoneTask(TaskId);
-            return true;
+            string userName = _accessor.HttpContext.Session.GetString("LoginName");
+            JoinedTask task = _taskDal.GetTask(TaskId);
+            if (task.AssingerName == userName)
+            { 
+                return _taskDal.DoneTask(TaskId);
+            }
+            return false;
         }
 
         public List<JoinedTask> GetAllTasks()
@@ -60,8 +77,12 @@ namespace TaskList.Business.Concrete
 
         public bool UpdateTask(Task task)
         {
-            _taskDal.UpdateTask(task);
-            return true;
+            Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
+            if (task.AssingerId == userId)
+            {
+                return _taskDal.UpdateTask(task);
+            }
+            return false;
         }
     }
 }
