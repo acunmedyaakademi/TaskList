@@ -32,16 +32,16 @@
                     <h2 class="card-title text-center mb-4">Kayıt Ol</h2>
                     <div class="mb-3">
                         <label class="form-label">Adınız ve Soyadınız</label>
-                        <input type="text" name="Name" class="form-control" placeholder="Adınızı ve soyadınızı giriniz">
+                        <input type="text" required name="Name" class="form-control" placeholder="Adınızı ve soyadınızı giriniz">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Mail Adresiniz</label>
-                        <input type="email" name="Email" class="form-control" placeholder="Mail adresinizi giriniz">
+                        <input type="email" required minlength="3" maxlength="50" name="Email" class="form-control" placeholder="Mail adresinizi giriniz">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Şifreniz</label>
                         <div class="input-group input-group-flat">
-                            <input type="password" name="Password" class="form-control" placeholder="Şifrenizi giriniz" autocomplete="off">
+                            <input type="password" required name="Password" class="form-control" placeholder="Şifrenizi giriniz" autocomplete="off">
                             <span class="input-group-text">
                                 <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
                                     <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
