@@ -11,6 +11,8 @@ namespace TaskList.Business.Abstract
 
         ResponseModel Register(AddUser addUser);
 
+        List<GetUserModel> GetUsers();
+
         User GetUserById(Guid id);
 
         User GetUserByMail(string Email);

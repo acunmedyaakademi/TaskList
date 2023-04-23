@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskList.Business.Abstract;
+using TaskList.Models.ViewModels.UserViewModels;
 
 namespace TaskList.Controllers
 {
@@ -16,17 +17,29 @@ namespace TaskList.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("LoginName") == null)
+                return RedirectToAction("login", "account");
+
             return View();
         }
 
-        public IActionResult UsersTasks()
+        [Route("user/userstasks/{id}")]
+        public IActionResult UsersTasks(string id)
         {
+            if (HttpContext.Session.GetString("LoginName") == null)
+                return RedirectToAction("login", "account");
 
+            //return Content(id);
             return View();
         }
         public IActionResult Users()
         {
-            return View();
+            if (HttpContext.Session.GetString("LoginName") == null)
+                return RedirectToAction("login", "account");
+
+            List<GetUserModel> users =  _userService.GetUsers();
+
+            return View(users);
         }
     }
 }

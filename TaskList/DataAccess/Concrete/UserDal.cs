@@ -89,7 +89,7 @@ namespace TaskList.DataAccess.Concrete
                     var reader = command.ExecuteReader();
 
                     reader.Read();
-                    if(reader.HasRows)
+                    if (reader.HasRows)
                     {
                         return true;
                     }
@@ -120,7 +120,7 @@ namespace TaskList.DataAccess.Concrete
                     var reader = command.ExecuteReader();
 
                     reader.Read();
-                    if(reader.HasRows)
+                    if (reader.HasRows)
                     {
                         return reader.GetDateTime(0);
                     }
@@ -155,14 +155,14 @@ namespace TaskList.DataAccess.Concrete
 
                     reader.Read();
                     user.Id = reader.GetGuid(0);
-                    user.Name =reader.GetString(1);
+                    user.Name = reader.GetString(1);
                     user.Email = reader.GetString(2);
                     user.Password = reader.GetString(3);
                     user.MailCode = reader.GetString(4);
                     user.MailSendDate = reader.GetDateTime(5);
                     user.MailConfirmed = reader.GetBoolean(6);
-                    user.CreatedOn= reader.GetDateTime(7);
-                    user.IsActive= reader.GetBoolean(8);
+                    user.CreatedOn = reader.GetDateTime(7);
+                    user.IsActive = reader.GetBoolean(8);
 
                     return user;
 
@@ -213,6 +213,42 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
+        public List<GetUserModel> GetUsers()
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    List<GetUserModel> users = new List<GetUserModel>();
+
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "select id, name, email from users where is_active = 1",
+                            connection);
+
+                    //command.Parameters.AddWithValue("@is_active", isActive);
+
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        GetUserModel user = new();
+                        user.Id = reader.GetGuid(0);
+                        user.Name = reader.GetString(1);
+                        user.Email = reader.GetString(2);
+
+                        users.Add(user);
+                    }
+                    return users;
+
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+        }
 
         public SessionModel? Login(LoginUser loginUser)
         {
@@ -224,7 +260,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "select id, name, email, mail_confirmed from users where email = @email and password = @password and is_active = 1",connection); 
+                            "select id, name, email, mail_confirmed from users where email = @email and password = @password and is_active = 1", connection);
                     command.Parameters.AddWithValue("@password", loginUser.Password);
                     command.Parameters.AddWithValue("@email", loginUser.Email);
                     var reader = command.ExecuteReader();
@@ -256,7 +292,7 @@ namespace TaskList.DataAccess.Concrete
                 try
                 {
                     connection.Open();
-                    var command = new SqlCommand("UPDATE users SET password = @password WHERE email = @email and mail_code = @mail_Code",connection);
+                    var command = new SqlCommand("UPDATE users SET password = @password WHERE email = @email and mail_code = @mail_Code", connection);
 
                     command.Parameters.AddWithValue("@email", resetPassword.Email);
                     command.Parameters.AddWithValue("@mail_Code", resetPassword.MailCode);
@@ -264,7 +300,7 @@ namespace TaskList.DataAccess.Concrete
 
                     int a = command.ExecuteNonQuery();
 
-                    if (a==0)
+                    if (a == 0)
                     {
                         return false;
                     }
@@ -289,7 +325,7 @@ namespace TaskList.DataAccess.Concrete
                     var command = new SqlCommand("UPDATE users SET mail_code = @mailCode, mail_send_date = @mailDate  WHERE email = @email", connection);
 
                     command.Parameters.AddWithValue("@email", email);
-                    command.Parameters.AddWithValue("@mailCode",mailCode);
+                    command.Parameters.AddWithValue("@mailCode", mailCode);
                     command.Parameters.AddWithValue("@mailDate", DateTime.Now);
 
                     int a = command.ExecuteNonQuery();

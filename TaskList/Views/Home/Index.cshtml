@@ -3,20 +3,22 @@
     <div class="row">
         <div class="col-md-11" style="margin:auto; display:flex">
 
-            <div class="col-md-8" style="flex:1">
+            <div class="col-md-3" style="flex:2">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Raporlar</h3>
+                    <div class="card-header border-0">
+                        <div class="card-title">Raporlar</div>
                     </div>
 
 
-                    <div class="table-responsive">
-                        <table class="table card-table table-vcenter">
+                    <div class="card-table table-responsive">
+                        <table class="table table-vcenter">
+                            <thead>
                             <tr>
                                 <th>Kullanıcı</th>
                                 <th>Rapor</th>
 
                             </tr>
+                            </thead>
                             <tr>
 
                                 <td class="w-100">
@@ -36,6 +38,8 @@
                     </div>
                 </div>
             </div>
+            <div class="col-1">
+            </div>
 
             <div class="col-md-3" style="flex:2">
                 <div class="card">
@@ -46,15 +50,18 @@
                         <table class="table table-vcenter">
                             <thead>
                                 <tr>
-                                    <th>Kullanıcı</th>
-                                    <th>Yorum</th>
+                                    <th>Görevi Atayan</th>
+                                    <th>Görev</th>
                                     <th>Tarih</th>
+                                    <th>Yorum</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                    <td class="text-nowrap text-muted">
+                                        <div class="text-truncate">
+                                            Kullanıcı adı olacak
+                                        </div>
                                     </td>
                                     <td class="td-truncate">
                                         <div class="text-truncate">
@@ -62,50 +69,6 @@
                                         </div>
                                     </td>
                                     <td class="text-nowrap text-muted">28 Nov 2019</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm">JL</span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            Change deprecated html tags to text decoration classes (#29604)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">27 Nov 2019</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/002m.jpg)"></span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            justify-content:between ⇒ justify-content:space-between (#29734)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">26 Nov 2019</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/003m.jpg)"></span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            Update change-version.js (#29736)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">26 Nov 2019</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            Regenerate package-lock.json (#29730)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">25 Nov 2019</td>
                                     <td class="text-nowrap">
                                         <a href="#" class="text-muted">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/message -->
@@ -175,6 +138,6 @@
             </div>
         </div>
         <br />
-        
+
     </div>
 </div>

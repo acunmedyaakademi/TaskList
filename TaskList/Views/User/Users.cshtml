@@ -1,22 +1,30 @@
-﻿<div class="page-body">
+﻿@using TaskList.Models.ViewModels.UserViewModels;
+@model List<GetUserModel>
+
+<div class="page-body">
     <div class="container-xl">
         <div class="row row-cards">
+            @for (int i = 0; i < Model.Count; i++)
+            {
             <div class="col-md-6 col-lg-3">
+                
                 <div class="card">
                     <div class="card-body p-4 text-center">
-                        <span class="avatar avatar-xl mb-3 rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                        <h3 class="m-0 mb-1"><a href="/user/userstasks">Paweł Kuna</a></h3>
+                            <span class="avatar avatar-xl mb-3 rounded" style="background-image: url(https://icon-library.com/images/no-photo-available-icon/no-photo-available-icon-20.jpg)"></span>
+                        <h3 class="m-0 mb-1"><a href="/user/userstasks/@Model[i].Id">@Model[i].Name</a></h3>
                         <div class="text-muted">UI Designer</div>
                         <div class="mt-3">
-                            <a href="/task/createTask" class="btn btn-primary d-none d-sm-inline-block">
+                                <a href="/task/createTask/@Model[i].Id" class="btn btn-primary d-none d-sm-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                                 Görev ver
                             </a>
                         </div>
                     </div>
                 </div>
+                
             </div>
+                }
         </div>
     </div>
 </div>
