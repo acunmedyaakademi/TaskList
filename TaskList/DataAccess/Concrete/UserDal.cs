@@ -17,15 +17,15 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "INSERT INTO ADO_Users (id, name, email, password, mail_code, mail_send_date, mail_confirmed, created_on, is_active) VALUES (@id, @name, @email, @password, @mailCode, @mailSendDate, @mailConfirmed, @createdOn, @isActive)",
+                            "INSERT INTO users (id, name, email, password, mail_code, mail_send_date, mail_confirmed, created_on, is_active) VALUES (@id, @name, @email, @password, @mailCode, @mailSendDate, @mailConfirmed, @createdOn, @isActive)",
                             connection);
 
                     command.Parameters.AddWithValue("@id", Guid.NewGuid());
                     command.Parameters.AddWithValue("@name", addUser.Name);
                     command.Parameters.AddWithValue("@email", addUser.Email);
                     command.Parameters.AddWithValue("@password", addUser.Password);
-                    //command.Parameters.AddWithValue("@mailCode", addUser.Name);
-                    //command.Parameters.AddWithValue("@mailSendDate", addUser.Name);
+                    command.Parameters.AddWithValue("@mailCode", "nul");
+                    command.Parameters.AddWithValue("@mailSendDate", DateTime.Now);
                     command.Parameters.AddWithValue("@mailConfirmed", false);
                     command.Parameters.AddWithValue("@createdOn", DateTime.Now);
                     command.Parameters.AddWithValue("@isActive", true);
@@ -236,6 +236,36 @@ namespace TaskList.DataAccess.Concrete
                     int a = command.ExecuteNonQuery();
 
                     if (a==0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool SetMailCode(string email, string mailCode)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue)) //TODO:  sayackonulacak
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new SqlCommand("UPDATE users SET mail_code = @mailCode, mail_send_date = @mailDate  WHERE email = @email", connection);
+
+                    command.Parameters.AddWithValue("@email", email);
+                    command.Parameters.AddWithValue("@mailCode",mailCode);
+                    command.Parameters.AddWithValue("@mailDate", DateTime.Now);
+
+                    int a = command.ExecuteNonQuery();
+
+                    if (a == 0)
                     {
                         return false;
                     }

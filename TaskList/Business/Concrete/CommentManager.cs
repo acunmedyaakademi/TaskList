@@ -1,4 +1,5 @@
 ﻿using TaskList.Business.Abstract;
+using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
 using TaskList.Models.ViewModels.CommentViewModels;
@@ -18,15 +19,25 @@ namespace TaskList.Business.Concrete
 
         public bool AddComment(Comment comment)
         {
-            _commentDal.AddComment(comment);
-            return true;
-        }
+            if (_accessor.HttpContext.Session.GetString("LoginId") == comment.UserId.ToString())
+            {
+                if (CheckString.Check(comment.TheComment))
+                    return _commentDal.AddComment(comment);
+                return false;
+            }
+            return false;
 
+        }
 
         public bool DeleteComment(Guid CommentId)
         {
-            _commentDal.DeleteComment(CommentId);
-            return true;
+            Comment comment = _commentDal.GetCommentbyId(CommentId);
+            if (comment == null) return false;
+            if (_accessor.HttpContext.Session.GetString("LoginId") == comment.UserId.ToString())
+            {
+                return _commentDal.DeleteComment(CommentId);
+            }
+            return false;
         }
 
         public Comment? GetComment(Guid UserId, Guid TaskId)

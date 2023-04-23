@@ -7,10 +7,12 @@ namespace TaskList.Controllers
     public class CommentController : Controller
     {
         private readonly ICommentService _commentService;
+        private readonly ITaskService _taskService;
 
-        public CommentController(ICommentService commentService)
+        public CommentController(ICommentService commentService, ITaskService taskService)
         {
             _commentService = commentService;
+            _taskService = taskService;
         }
 
 

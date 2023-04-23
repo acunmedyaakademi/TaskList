@@ -1,5 +1,7 @@
 ﻿using filmblogu.Core;
+using System.Threading.Tasks;
 using TaskList.Business.Abstract;
+using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
 using TaskList.Models.ViewModels.UserViewModels;
@@ -20,24 +22,38 @@ namespace TaskList.Business.Concrete
             _accessor = accessor;
         }
 
-        public bool AddUser(AddUser addUser)
-        {   
-            User user = _userDal.GetUserByMail(addUser.Email);
-            if(user == null)
+        public bool Register(AddUser addUser)
+        {
+            if (CheckString.Check(addUser.Email) && CheckString.Check(addUser.Password) && CheckString.Check(addUser.Name))
             {
-                return _userDal.AddUser(addUser);
+                User user = _userDal.GetUserByMail(addUser.Email);
+                if (user == null)
+                {
+                    if (_userDal.AddUser(addUser))
+                    {
+                        return _userDal.SetMailCode(addUser.Email, _codeGenerator.RandomPassword(6));
+                    }
+                }
             }
             return false;
         }
 
         public bool ControlIsEmailConfirmed(string email)
         {
-            return _userDal.ControlIsEmailConfirmed(email);
+            if(CheckString.Check(email))
+            {
+                return _userDal.ControlIsEmailConfirmed(email);
+            }
+            return false;
         }
 
         public bool ControlMailTime(string email)
         {
-            if (_userDal.GetMailTime(email) == null)
+            if (!CheckString.Check(email))
+            {
+                return false;
+            }
+                if (_userDal.GetMailTime(email) == null)
             {
                 return false;
             }
@@ -66,24 +82,34 @@ namespace TaskList.Business.Concrete
 
         public SessionModel? Login(LoginUser loginUser)
         {
-            return _userDal.Login(loginUser);
+            if (CheckString.Check(loginUser.Email) && CheckString.Check(loginUser.Password))
+            {
+                return _userDal.Login(loginUser);
+            }
+            return null;
         }
 
         public bool ResetPassword(ResetPassword resetPassword)
         {
-            _userDal.ResetPassword(resetPassword);
-            return true;
+            if (CheckString.Check(resetPassword.Email) && CheckString.Check(resetPassword.Password) && CheckString.Check(resetPassword.Mail_Code))
+            {
+                return _userDal.ResetPassword(resetPassword);
+            }
+            return false;
         }
 
-        public bool SendResetCode(string Email)
+        public bool SendMailCode(string Email)
         {
+            if(CheckString.Check(Email))
             if(ControlMailTime(Email))
             {
-                string code = _codeGenerator.RandomPassword(10);
+                string code = _codeGenerator.RandomPassword(6);
                 _mailKitService.SendMailPassword(Email, code);
                 return true;
             }
             return false;
         }
+
+
     }
 }

@@ -15,6 +15,8 @@ namespace TaskList.Interfaces
 
         bool ResetPassword(ResetPassword resetPassword);
 
+        bool SetMailCode(string email, string mailCode);
+
         DateTime? GetMailTime(string email);
 
         bool ControlIsEmailConfirmed(string email);

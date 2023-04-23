@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using TaskList.Business.Abstract;
+using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
 using TaskList.Models.ViewModels;
@@ -20,17 +21,18 @@ namespace TaskList.Business.Concrete
 
         public bool AddTask(Task task)
         {
-            Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
-            if (task.AssingerId == userId)
+            if(CheckString.Check(task.TaskDescription) && CheckString.Check(task.TaskName))
             {
-                if (ControlUndoneTask(task.AssignedById))
+                Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
+                if (task.AssingerId == userId)
                 {
-                    return _taskDal.AddTask(task);
+                    if (ControlUndoneTask(task.AssignedById))
+                    {
+                        return _taskDal.AddTask(task);
+                    }
                 }
-                return false;
             }
             return false;
-
         }
 
         public bool ControlUndoneTask(Guid AssingedById)
@@ -77,10 +79,13 @@ namespace TaskList.Business.Concrete
 
         public bool UpdateTask(Task task)
         {
-            Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
-            if (task.AssingerId == userId)
+            if (CheckString.Check(task.TaskDescription) && CheckString.Check(task.TaskName))
             {
-                return _taskDal.UpdateTask(task);
+                Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
+                if (task.AssingerId == userId)
+                {
+                    return _taskDal.UpdateTask(task);
+                }
             }
             return false;
         }

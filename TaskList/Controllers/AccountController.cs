@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using TaskList.Business.Abstract;
+using TaskList.Core;
 using TaskList.Interfaces;
 using TaskList.Models;
 using TaskList.Models.ViewModels.UserViewModels;
@@ -38,7 +39,7 @@ namespace TaskList.Controllers
             {
                 if (!model.MailConfirmed)
                 {
-                    return Content("Mailconfiret");
+                    return Content("Confirm Mail !");
                 }
                 HttpContext.Session.SetString("LoginId", model.Id.ToString());
                 HttpContext.Session.SetString("LoginName", model.Name);
@@ -65,7 +66,7 @@ namespace TaskList.Controllers
             {
                 //todo bussines bitince mail burada atılıp modele işlenecek
 
-                if (_userService.AddUser(user))
+                if (_userService.Register(user))
                 {
                     return RedirectToAction("login", "account");
 
@@ -101,6 +102,27 @@ namespace TaskList.Controllers
             ViewBag.Reset = "Şifre değiştirilemedi, lütfen tekrar deneyiniz";
             return View();
         }
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgetPassword(string Email)
+        {
+            //todo recaptcha
+            if (_userService.SendMailCode(Email))
+            {
+                return RedirectToAction("ResetPassword", "Account");
+            }
+            
+            ViewBag.Reset = "Mail gonderilemedi!";
+            return View();
+        }
+
+
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("LoginId");

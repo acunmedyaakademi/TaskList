@@ -86,6 +86,36 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
+        public Comment? GetCommentbyId(Guid commentId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+                {
+                    connection.Open();
+                    var command = new SqlCommand("select [id] , [user_id], [task_id], [created_on], [is_active], [comment] from comments where id = @commentId", connection);
+                    command.Parameters.AddWithValue("@commentId", commentId);
+
+                    var reader = command.ExecuteReader();
+
+                    reader.Read();
+                    var commentItem = new Comment();
+                    commentItem.Id = reader.GetGuid(0);
+                    commentItem.UserId = reader.GetGuid(1);
+                    commentItem.TaskId = reader.GetGuid(2);
+                    commentItem.CreatedOn = reader.GetDateTime(3);
+                    commentItem.IsActive = reader.GetBoolean(4);
+                    commentItem.TheComment = reader.GetString(5);
+                    return commentItem;
+                }
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public List<JoinedComment>? GetComments(Guid TaskId)
         {
             try

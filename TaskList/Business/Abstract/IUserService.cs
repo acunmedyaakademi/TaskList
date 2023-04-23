@@ -7,7 +7,7 @@ namespace TaskList.Business.Abstract
     {
         SessionModel? Login(LoginUser loginUser);
 
-        bool AddUser(AddUser addUser);
+        bool Register(AddUser addUser);
 
         User GetUserById(string id);
 
@@ -15,7 +15,7 @@ namespace TaskList.Business.Abstract
 
         bool ResetPassword(ResetPassword resetPassword);
 
-        bool SendResetCode(string Email);
+        bool SendMailCode(string Email);
 
         bool ControlMailTime(string email);
 

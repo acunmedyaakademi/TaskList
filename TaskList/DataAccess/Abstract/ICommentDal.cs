@@ -14,5 +14,7 @@ namespace TaskList.Interfaces
 
         Comment? GetComment(Guid UserId, Guid TaskId);
 
+        Comment? GetCommentbyId(Guid commentId);
+
     }
 }
