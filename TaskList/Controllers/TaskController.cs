@@ -24,19 +24,29 @@ namespace TaskList.Controllers
 
             return View(_taskService.GetTaskById(id));
         }
-
-
-        public IActionResult DeleteTask(string TaskId)
+ 
+       
+        public IActionResult DeleteTask(string id)
         {
-            if (HttpContext.Session.GetString("LoginName") == null)
-                return RedirectToAction("login", "account");
+            try
+            {
+                if (HttpContext.Session.GetString("LoginName") == null)
+                    return RedirectToAction("login", "account");
+                ResponseModel response = _taskService.DeleteTask(new Guid(id));
+                if (response.Success)
+                    return RedirectToAction("AssignedTasks", "Task");
 
-            _taskService.DeleteTask(new Guid(TaskId));
-            ResponseModel response = _taskService.DeleteTask(new Guid(TaskId));
-            if (response.Success)
-                return View();
+                ViewBag.DeleteTask = "Islemde hata olusdu";
+                return RedirectToAction("AssignedTasks", "Task");
+            }
+            catch
+            {
+                ViewBag.DeleteTask = "Islemde hata olusdu";
+                return RedirectToAction("AssignedTasks", "Task");
+            }
 
-            return Content("hata");
+
+            //return Content("hata");
         }
         public IActionResult AssignedTasks()
         {
@@ -68,6 +78,11 @@ namespace TaskList.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateTask(CreateTaskModel taskModel)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Create = "Model valid degil";
+                return View();
+            }
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
 

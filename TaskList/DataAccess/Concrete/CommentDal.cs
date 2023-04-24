@@ -42,7 +42,7 @@ namespace TaskList.DataAccess.Concrete
                 using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
                 {
                     connection.Open();
-                    var command = new SqlCommand("DELETE FROM Comments WHERE ID = @id", connection);
+                    var command = new SqlCommand("UPDATE Comments SET [is_active] = 0  WHERE id = @id", connection);
                     command.Parameters.AddWithValue("@id", CommentId);
                     command.ExecuteNonQuery();
                 }
