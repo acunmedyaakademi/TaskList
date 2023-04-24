@@ -13,6 +13,8 @@ namespace TaskList.Interfaces
 
         bool DoneTask(Guid TaskId);
 
+        bool UndoneTask(Guid TaskId);
+
         bool DeleteTask(Guid TaskId);
 
         List<JoinedTask> GetUsersTasks(Guid id);
