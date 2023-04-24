@@ -10,11 +10,11 @@ namespace TestApp.Core
         {
             var emailMessage = new MimeMessage();
             //attach =  attach.Replace("\\", "//");
-            emailMessage.From.Add(new MailboxAddress("BlogApp", "onay@ekip2.com"));
+            emailMessage.From.Add(new MailboxAddress("TaskListApp(HACKLENEMEZ)", "onay@ekip2.com"));
             emailMessage.To.Add(new MailboxAddress("Kullanici", mailTo));
             //emailMessage.Cc.Add(new MailboxAddress("CC you", "sahil.emirov2@gmail.com"));
             //emailMessage.Bcc.Add(new MailboxAddress("BCC you", "beststore4world@gmail.com"));
-            emailMessage.Subject = "Test Project by Ekip2";
+            emailMessage.Subject = "Test Project by TaskListApp";
             var builder = new BodyBuilder();
             string template = MailTemplate.MailPassword;
             code = template.Replace("{password}", code).Replace("{Code}", code);

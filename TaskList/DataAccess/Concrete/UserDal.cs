@@ -112,7 +112,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "select mail_send_date, mail_confirmed, is_active from users where email = @email and is_acitve = true",
+                            "select mail_send_date, mail_confirmed, is_active from users where email = @email and is_active = 1",
                             connection);
 
                     command.Parameters.AddWithValue("@email", email);

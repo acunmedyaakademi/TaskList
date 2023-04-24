@@ -20,11 +20,12 @@
 
                                 </tr>
                             </thead>
+                            @if(Model.Reports != null)
                             @foreach (var item in Model.Reports)
                             {
                                 <tr>
                                     <td class="w-100">
-                                        <a href="#" class="text-reset">@item.Name</a>
+                                        <p @*todo buraya a at*@ class="text-reset">@item.Name</p>
                                     </td>
 
                                     <td class="text-nowrap">
@@ -60,6 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if (Model.UserTasks != null)
                                 @foreach (var item in Model.UserTasks)
                                 {
                                     <tr>
@@ -70,7 +72,7 @@
                                         </td>
                                         <td class="td-truncate">
                                             <div class="text-truncate">
-                                                <a href="/task/taskdetail">@item.TaskName</a>
+                                                <a href="/task/taskdetail?id=@item.Id">@item.TaskName</a>
                                             </div>
                                         </td>
                                         <td class="text-nowrap text-muted">@item.UpdatedOn</td>
@@ -104,7 +106,7 @@
 
                                 <th>Görevi Atayan</th>
                                 <th>Görev Atanan</th>
-                                <th></th>
+                                <th>Görev</th>
                                 <th>Tarih</th>
                                 <th></th>
                                 <th>Durum</th>
@@ -114,27 +116,33 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if (Model.AllTasks != null)
                             @foreach (var item in Model.AllTasks)
                             {
                                 <tr>
 
-                                    <td><a href="/task/TaskDetail?id=@item.Id" class="text-reset" tabindex="-1">@item.AssingerName</a></td>
+                                    <td><p class="text-reset" tabindex="-1">@item.AssingerName</p></td>
+
                                     <td>
                                         <span class="flag flag-country-tr"></span>
                                         @item.AssignedByName
                                     </td>
+
                                     <td>
+                                        <a href="/task/TaskDetail?id=@item.Id" class="text-reset" tabindex="-1">@item.TaskName</a>
                                     </td>
+
                                     <td>
                                         @item.UpdatedOn
                                     </td>
+
                                     <td>
                                         @if (item.IsDone)
                                         {
                                         <td>
                                             <span class="badge bg-success me-1"></span> Tamamlandı
                                         </td>
-                                            
+
                                         }
                                         else
                                         {

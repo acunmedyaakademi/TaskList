@@ -4,9 +4,7 @@ namespace TaskList.Models.ViewModels.UserViewModels
 {
     public class ResetPassword
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         [MaxLength(50)]

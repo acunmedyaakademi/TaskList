@@ -131,7 +131,12 @@ namespace TaskList.Business.Concrete
                 if (ControlMailTime(Email))
                 {
                     string code = _codeGenerator.RandomPassword(6);
-                    response.Success = _mailService.SendMailPassword(Email, code);
+                    if (_userDal.SetMailCode(Email, code))
+                    {
+                        response.Success = _mailService.SendMailPassword(Email, code);
+                        return response;
+                    }
+                    response.Message = "hata oluştu";
                     return response;
                 }
                 response.Message = "Az önce size onay kodu gönderdik, bir kaç dakika sonra tekrar deneyebilirsiniz";

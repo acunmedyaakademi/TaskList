@@ -55,7 +55,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "SELECT id, assigned_by_id, created_on, updated_on, is_done, is_active FROM tasks WHERE assigned_by_id = @assingedById and is_done = 0",
+                            "SELECT id, assigned_by_id, created_on, updated_on, is_done, is_active FROM tasks WHERE assigned_by_id = @assingedById and is_done = 0 and is_active = 1",
                             connection);
                     command.Parameters.AddWithValue("@assingedById", AssingedById);
 
@@ -106,7 +106,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "UPDATE Tasks SET [is_done] = @is_done where id = @id", connection);
+                            "UPDATE Tasks SET [is_done] = @is_done where id = @id and is_active = 1 ", connection);
 
                     command.Parameters.AddWithValue("@id", TaskId);
                     command.ExecuteNonQuery();
@@ -132,7 +132,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id order by updated_on desc",
+                            "SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id where t.is_active = 1 order by updated_on desc",
                             connection);
                     var reader = command.ExecuteReader();
 
@@ -212,7 +212,7 @@ namespace TaskList.DataAccess.Concrete
                 try
                 {
                     connection.Open();
-                    var command = new SqlCommand("SELECT u.name, COUNT(CASE WHEN is_done = 1 THEN 1 END) , COUNT(CASE WHEN is_done = 0 THEN 1 END) FROM tasks JOIN users AS u ON assigned_by_id = u.id GROUP BY u.name", connection);
+                    var command = new SqlCommand("SELECT u.name, COUNT(CASE WHEN is_done = 1 THEN 1 END) , COUNT(CASE WHEN is_done = 0 THEN 1 END) FROM tasks JOIN users AS u ON assigned_by_id = u.id where tasks.is_active = 1 GROUP BY u.name", connection);
                     var reader = command.ExecuteReader();
                     JoinedTask task = new();
                     while (reader.Read())
@@ -241,7 +241,7 @@ namespace TaskList.DataAccess.Concrete
 
                     connection.Open();
 
-                    var command = new SqlCommand("SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id WHERE t.id = @id", connection);
+                    var command = new SqlCommand("SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id WHERE t.id = @id and is_active = 1", connection);
                     command.Parameters.AddWithValue("@id", TaskId);
                     var reader = command.ExecuteReader();
                     JoinedTask task = new();
@@ -275,7 +275,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "SELECT id, assigner_id, assigned_by_id, [task_name], [task_description], [created_on], [updated_on], [is_done], [is_active] FROM tasks WHERE id = @id",
+                            "SELECT id, assigner_id, assigned_by_id, [task_name], [task_description], [created_on], [updated_on], [is_done], [is_active] FROM tasks WHERE id = @id and is_active = 1",
                             connection);
                     command.Parameters.AddWithValue("@id", taskId);
 
@@ -313,7 +313,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id WHERE assigned_by_id = @id",
+                            "SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id WHERE assigned_by_id = @id and is_active = 1",
                             connection);
                     command.Parameters.AddWithValue("@id", id);
 
