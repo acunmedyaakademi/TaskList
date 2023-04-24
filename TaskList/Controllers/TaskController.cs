@@ -10,6 +10,7 @@ namespace TaskList.Controllers
     public class TaskController : Controller
     {
         private readonly ITaskService _taskService;
+        private readonly IUserService _userService;
 
         public TaskController(ITaskService taskService)
         {
@@ -23,8 +24,8 @@ namespace TaskList.Controllers
 
             return View(_taskService.GetTaskById(id));
         }
- 
-       
+
+
         public IActionResult DeleteTask(string TaskId)
         {
             if (HttpContext.Session.GetString("LoginName") == null)
@@ -33,7 +34,7 @@ namespace TaskList.Controllers
             _taskService.DeleteTask(new Guid(TaskId));
             ResponseModel response = _taskService.DeleteTask(new Guid(TaskId));
             if (response.Success)
-            return View();
+                return View();
 
             return Content("hata");
         }
@@ -49,8 +50,10 @@ namespace TaskList.Controllers
         {
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
-
-            return View(_taskService.GetTask(new Guid(id)));
+            UpdateTaskModel model = new UpdateTaskModel();
+            model.task = _taskService.GetTask(new Guid(id));
+            model.Users = _userService.GetUsers();
+            return View(model);
         }
         public IActionResult CreateTask(string id)
         {
@@ -71,17 +74,17 @@ namespace TaskList.Controllers
             Task task = new Task();
             task.Id = Guid.NewGuid();
             task.AssingerId = new Guid(HttpContext.Session.GetString("LoginId"));
-            task.AssignedById = new Guid(HttpContext.Session.GetString("alan")); 
+            task.AssignedById = new Guid(HttpContext.Session.GetString("alan"));
             task.IsDone = false;
             task.CreatedOn = DateTime.Now;
             task.UpdatedOn = DateTime.Now;
             task.IsActive = true;
-            task.TaskDescription= taskModel.TaskDescription;
+            task.TaskDescription = taskModel.TaskDescription;
             task.TaskName = taskModel.TaskName;
             ResponseModel response = _taskService.AddTask(task);
             if (response.Success)
             {
-                RedirectToAction("users","user");
+                RedirectToAction("users", "user");
             }
             ViewBag.Create = response.Message;
             return View();
@@ -98,6 +101,6 @@ namespace TaskList.Controllers
             return View();
         }
 
-        
+
     }
 }

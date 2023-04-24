@@ -1,4 +1,4 @@
-﻿@model TaskList.Models.ViewModels.JoinedTask
+﻿@model TaskList.Models.ViewModels.TaskViewModels.UpdateTaskModel
 
 <div class="container">
     <div class="row">
@@ -14,30 +14,20 @@
                                 <div class="col-md-11">
                                     <div class="mb-3">
                                         <label class="form-label">Görev <span class="form-label-description">56/100</span></label>
-                                        <input class="form-control" name="example-textarea-input" rows="6" placeholder="Görev Adı" value="@Model.TaskName">
+                                        <input class="form-control" name="TaskName" rows="6" placeholder="Görev Adı" value="@Model.task.TaskName">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Görev <span class="form-label-description">56/100</span></label>
-                                        <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Görev detayı">@Model.TaskDescription</textarea>
+                                        <textarea class="form-control" name="TaskDescription" rows="6" placeholder="Görev detayı">@Model.task.TaskDescription</textarea>
                                     </div>
-                                    <div class="mb-3">
-                                        <div class="form-label">Görev Durumu</div>
-                                        <select class="form-select">
-                                            @if (Model.IsDone)
-                                            {
-                                            <option value="1">Tamamlandı</option>
-                                            }
-                                            else
-                                            {                                                    
-                                            <option value="2">Devam Ediyor</option>
-                                            }
-                                        </select>
-                                    </div>
+                                
                                     <div class="mb-3">
                                         <div class="form-label">Görevi Devret</div>
                                         <select class="form-select">
-                                            <option value="1">Kullanıcı 1</option> @*görevi devret?*@
-                                            <option value="2">Kullanıcı 2</option>
+                                           @foreach (var item in Model.Users)
+                                            {
+                                                <option name="AssignedById" value="@item.Id" >@item.Name</option> 
+                                            }
                                         </select>
                                     </div>
                                     <div class="mt-3">
