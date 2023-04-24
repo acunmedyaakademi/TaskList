@@ -106,7 +106,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "UPDATE Tasks SET [is_done] = @is_done where id = @id and is_active = 1 ", connection);
+                            "UPDATE Tasks SET [is_done] = 1 where id = @id and is_active = 1 ", connection);
 
                     command.Parameters.AddWithValue("@id", TaskId);
                     command.ExecuteNonQuery();

@@ -84,7 +84,7 @@ namespace TaskList.Business.Concrete
 
             string userName = _accessor.HttpContext.Session.GetString("LoginName");
             JoinedTask task = _taskDal.GetTask(TaskId);
-            if (task.AssingerName == userName && task != null)
+            if (task.AssignedByName == userName && task != null)
             {
                 if (_taskDal.DoneTask(TaskId))
                 {
