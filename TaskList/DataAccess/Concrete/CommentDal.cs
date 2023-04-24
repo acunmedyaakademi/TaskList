@@ -19,7 +19,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
                     var command = new SqlCommand("INSERT INTO [comments] (id, comment, created_on, user_id, task_id, is_active) VALUES (@Id ,@Comment, @Date, @UserId, @TaskId, @IsActive)", connection);
 
-           
+
                     command.Parameters.AddWithValue("@Id", Guid.NewGuid());
                     command.Parameters.AddWithValue("@Comment", comment.TheComment);
                     command.Parameters.AddWithValue("@IsActive", true);
@@ -62,6 +62,8 @@ namespace TaskList.DataAccess.Concrete
             {
                 using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
                 {
+                    var commentItem = new Comment();
+
                     connection.Open();
                     var command = new SqlCommand("select  TOP (1) [id] , [user_id], [task_id], [created_on], [is_active], [comment] from comments where user_id = @user_id and task_id = @task_id order by created_on desc", connection);
                     command.Parameters.AddWithValue("@user_id", UserId);
@@ -69,15 +71,20 @@ namespace TaskList.DataAccess.Concrete
 
                     var reader = command.ExecuteReader();
 
-                    reader.Read();
-                    var commentItem = new Comment();
-                    commentItem.Id = reader.GetGuid(0);
-                    commentItem.UserId = reader.GetGuid(1);
-                    commentItem.TaskId = reader.GetGuid(2);
-                    commentItem.CreatedOn = reader.GetDateTime(3);
-                    commentItem.IsActive = reader.GetBoolean(4);
-                    commentItem.TheComment = reader.GetString(5);
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+
+                        commentItem.Id = reader.GetGuid(0);
+                        commentItem.UserId = reader.GetGuid(1);
+                        commentItem.TaskId = reader.GetGuid(2);
+                        commentItem.CreatedOn = reader.GetDateTime(3);
+                        commentItem.IsActive = reader.GetBoolean(4);
+                        commentItem.TheComment = reader.GetString(5);
+
+                    }
                     return commentItem;
+
                 }
 
             }

@@ -30,5 +30,8 @@ namespace TaskList.Interfaces
         Task GetTaskById(Guid taskId);
 
         List<Report>? GetReports();
+
+        public bool ControlUndoneTaskForUpdate(Guid AssingedById, Guid taskId)
+;
     }
 }

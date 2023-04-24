@@ -169,7 +169,7 @@ namespace TaskList.Business.Concrete
                 Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
                 if (task.AssingerId == userId)
                 {
-                    if (_taskDal.ControlUndoneTask(task.AssignedById))
+                    if (_taskDal.ControlUndoneTaskForUpdate(task.AssignedById,task.Id))
                     {
                         if (userId != task.AssignedById)
                         {

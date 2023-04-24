@@ -42,9 +42,8 @@ namespace TaskList.Business.Concrete
                             response.Message = "yorumunuz gönderildi";
                             return response;
                         }
-                    }
-                    
-                    response.Message = "Kullanıcı Eklenemedi";
+                    }                    
+                    response.Message = "Yorumunuz Gönderilemedi";
                     return response;
                 }
                 response.Message = "Özel Karakterler Kullanılamaz";

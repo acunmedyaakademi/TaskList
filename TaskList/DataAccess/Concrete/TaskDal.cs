@@ -77,6 +77,38 @@ namespace TaskList.DataAccess.Concrete
 
             }
         }
+        public bool ControlUndoneTaskForUpdate(Guid AssingedById, Guid taskId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "SELECT id, assigned_by_id, created_on, updated_on, is_done, is_active FROM tasks WHERE assigned_by_id = @assingedById and is_done = 0 and is_active = 1 and id <> @taskId",
+                            connection);
+                    command.Parameters.AddWithValue("@assingedById", AssingedById);
+                    command.Parameters.AddWithValue("@taskId", taskId);
+
+                    var reader = command.ExecuteReader();
+
+                    reader.Read();
+                    if (reader.HasRows)
+                    {
+                        return false;
+                    }
+                    return true;
+
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+
+            }
+        }
 
         public bool DeleteTask(Guid TaskId)
         {
