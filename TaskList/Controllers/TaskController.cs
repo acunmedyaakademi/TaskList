@@ -12,19 +12,19 @@ namespace TaskList.Controllers
         private readonly ITaskService _taskService;
         private readonly IUserService _userService;
 
-        public TaskController(ITaskService taskService)
+        public TaskController(ITaskService taskService, IUserService userService)
         {
             _taskService = taskService;
+            _userService = userService;
         }
 
-        public IActionResult TaskDetail(Guid id)
+        public IActionResult TaskDetail(string id)
         {
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
 
-            return View(_taskService.GetTaskById(id));
-        }
- 
+            return View(_taskService.GetTaskById(new Guid(id)));
+        } 
        
         public IActionResult DeleteTask(string id)
         {
@@ -63,12 +63,15 @@ namespace TaskList.Controllers
             UpdateTaskModel model = new UpdateTaskModel();
             model.task = _taskService.GetTask(new Guid(id));
             model.Users = _userService.GetUsers();
+
+            HttpContext.Session.SetString("UpdateTask", id);
             return View(model);
         }
         public IActionResult CreateTask(string id)
         {
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
+
 
             HttpContext.Session.SetString("alan", id);
             return View();
@@ -112,8 +115,17 @@ namespace TaskList.Controllers
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
 
-            _taskService.UpdateTask(task);
-            return View();
+            task.Id = new Guid(HttpContext.Session.GetString("UpdateTask"));
+            task.AssingerId = new Guid(HttpContext.Session.GetString("LoginId"));
+            task.IsDone= false;
+            ResponseModel response= _taskService.UpdateTask(task);
+            if (response.Success)
+            {
+                return RedirectToAction("AssignedTasks", "Task");
+            }
+            ViewBag.Update = response.Message;
+            return RedirectToAction("AssignedTasks", "Task");
+
         }
 
 

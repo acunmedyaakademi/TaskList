@@ -351,16 +351,15 @@ namespace TaskList.DataAccess.Concrete
                 {
                     connection.Open();
 
-                    var command = new SqlCommand("UPDATE Tasks SET [assigner_id] = @assigner_id, [assigned_by_id] = @assigned_by_id, [task_name] = @task_name, [task_description] = @task_description , [updated_on] = @updated_on, [is_done] = @is_done, [is_active] = @is_active where id = @id ", connection);
+                    var command = new SqlCommand("UPDATE Tasks SET [assigner_id] = @assigner_id, [assigned_by_id] = @assigned_by_id, [task_name] = @task_name, [task_description] = @task_description , [updated_on] = @updated_on, [is_done] = @is_done where id = @id ", connection);
 
-                    command.Parameters.AddWithValue("@id", Guid.NewGuid());
+                    command.Parameters.AddWithValue("@id", task.Id);
                     command.Parameters.AddWithValue("@assigner_id", task.AssingerId);
                     command.Parameters.AddWithValue("@assigned_by_id", task.AssignedById);
                     command.Parameters.AddWithValue("@task_name", task.TaskName);
                     command.Parameters.AddWithValue("@task_description", task.TaskDescription);
                     command.Parameters.AddWithValue("@updated_on", DateTime.Now);
                     command.Parameters.AddWithValue("@is_done", task.IsDone);
-                    command.Parameters.AddWithValue("@is_active", task.IsActive);
                     command.ExecuteNonQuery();
 
                     return true;
