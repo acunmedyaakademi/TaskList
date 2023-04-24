@@ -1,29 +1,30 @@
-﻿<div class="container">
+﻿@model TaskList.Models.ViewModels.TaskViewModels.TaskDetailContainer
+<div class="container">
     <div class="row">
         <div class="col-md-11" style="margin:auto; display:flex">
             <div class="col-md-3" style="flex:2">
                 <div class="card">
                     <div class="card-header border-0">
-                        <div class="card-title">Görev adı</div>
+                        <div class="card-title">@Model.Task.TaskName</div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <p class="card-text" style="height:auto">
-                                Görev içeriği
+                                @Model.Task.TaskDescription
                             </p>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <p class="card-text" style="height:auto">
-                                Görevi atayan kişi
+                                @Model.Task.AssingerName
                             </p>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <p class="card-text" style="height:auto">
-                                Atanan Kişi
+                                @Model.Task.AssignedByName
                             </p>
                         </div>
                     </div>
@@ -46,14 +47,21 @@
                 </div>
                 <div class="list-group list-group-flush list-group-hoverable">
                     <div class="list-group-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto"><span class="badge bg-red"></span></div>
-                            <div class="col text-truncate">
-                                Kullanıcı Adı
-                                <div class="d-block text-muted text-truncate mt-n1">Yorum detayı</div>
-                            </div>
-                        </div>
+                        @if (Model.Comments != null)
+                            @foreach (var item in Model.Comments)
+                            {
+                                <div class="row align-items-center">
+
+                                    <div class="col-auto"><span class="badge bg-yellow"></span></div>
+                                    <div class="col text-truncate">
+                                        @item.UserName
+                                        <div class="d-block text-muted text-truncate mt-n1">@item.TheComment</div>
+                                    </div>
+                                </div>
+                            }
+
                     </div>
+
                 </div>
             </div>
         </div>
@@ -65,14 +73,17 @@
     <div class="row">
         <div class="col-md-11" style="margin:auto; display:flex;">
             <div class="card" style="flex:2">
-                <form class="card">
+                <form asp-action="CreateComment" asp-controller="comment" method="post" class="card">
                     <div class="card-body">
                         <h3 class="card-title">Yorum Ekle</h3>
+                        <h3>@ViewBag.CommentMessage</h3>
                         <div class="row row-cards">
                             <div class="col-md-12">
                                 <div class="mb-3 mb-0">
                                     <label class="form-label">Yorumunuz</label>
-                                    <textarea rows="5" class="form-control" placeholder="Yorumunuz"></textarea>
+                                    <textarea rows="5" name="TheComment" class="form-control" placeholder="Yorumunuz"></textarea>
+                                    <input type="hidden" name="TaskId" value="@Model.Task.Id" />
+
                                 </div>
                             </div>
                         </div>
@@ -80,8 +91,11 @@
                     <div class="card-footer text-end">
                         <button type="submit" class="btn btn-primary">Yorumu gönder</button>
                     </div>
+               
                 </form>
             </div>
         </div>
     </div>
+</div>
+
 

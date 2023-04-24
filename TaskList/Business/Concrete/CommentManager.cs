@@ -33,12 +33,17 @@ namespace TaskList.Business.Concrete
             {
                 if (CheckString.Check(comment.TheComment))
                 {
-                    if (_commentDal.AddComment(comment))
+                    if (_commentDal.GetComment(comment.UserId,comment.TaskId).CreatedOn < DateTime.Now.AddMinutes(-3))
                     {
-                        User user = _userDal.GetUserById(_taskDal.GetTaskById(comment.TaskId).AssignedById);
-                        response.Success = _mailKitService.SendMailPassword(user.Email, "size yorum geldi"); //todo mail send
-                        return response;
+                        if (_commentDal.AddComment(comment))
+                        {
+                            User user = _userDal.GetUserById(_taskDal.GetTaskById(comment.TaskId).AssignedById);
+                            response.Success = _mailKitService.SendMailPassword(user.Email, "size yorum geldi"); //todo mail send
+                            response.Message = "yorumunuz gönderildi";
+                            return response;
+                        }
                     }
+                    
                     response.Message = "Kullanıcı Eklenemedi";
                     return response;
                 }

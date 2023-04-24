@@ -19,9 +19,10 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
                     var command = new SqlCommand("INSERT INTO [comments] (id, comment, created_on, user_id, task_id, is_active) VALUES (@Id ,@Comment, @Date, @UserId, @TaskId, @IsActive)", connection);
 
-                    command.Parameters.AddWithValue("@Id", comment.Id);
+           
+                    command.Parameters.AddWithValue("@Id", Guid.NewGuid());
                     command.Parameters.AddWithValue("@Comment", comment.TheComment);
-                    command.Parameters.AddWithValue("@IsActive", comment.IsActive);
+                    command.Parameters.AddWithValue("@IsActive", true);
                     command.Parameters.AddWithValue("@Date", DateTime.Now);
                     command.Parameters.AddWithValue("@UserId", comment.UserId);
                     command.Parameters.AddWithValue("@TaskId", comment.TaskId);
@@ -125,7 +126,7 @@ namespace TaskList.DataAccess.Concrete
                 using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
                 {
                     connection.Open();
-                    var command = new SqlCommand("select c.id, comment, c.created_on, u.name, t.task_name, c.is_active from comments as c join users as u on u.id = u.id join tasks as t on c.task_id = t.id where t.id = @id", connection);
+                    var command = new SqlCommand("select c.id, comment, c.created_on, u.name, t.task_name, c.is_active from comments as c join users as u on u.id = c.user_id join tasks as t on c.task_id = t.id where t.id = @id and c.is_active = 1", connection);
                     command.Parameters.AddWithValue("@id", TaskId);
 
                     var reader = command.ExecuteReader();

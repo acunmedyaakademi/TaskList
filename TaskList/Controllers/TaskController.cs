@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AspNetCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskList.Business.Abstract;
 using TaskList.Models.ViewModels;
@@ -11,11 +12,13 @@ namespace TaskList.Controllers
     {
         private readonly ITaskService _taskService;
         private readonly IUserService _userService;
+        readonly ICommentService _commentService;
 
-        public TaskController(ITaskService taskService, IUserService userService)
+        public TaskController(ITaskService taskService, IUserService userService, ICommentService commentService)
         {
             _taskService = taskService;
             _userService = userService;
+            _commentService = commentService;
         }
 
         public IActionResult TaskDetail(string id)
@@ -23,7 +26,12 @@ namespace TaskList.Controllers
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
 
-            return View(_taskService.GetTaskById(new Guid(id)));
+            TaskDetailContainer model = new TaskDetailContainer();
+
+            model.Task = _taskService.GetTask(new Guid(id));
+            model.Comments = _commentService.GetComments(new Guid(id));
+            ViewBag.CommentMessage = HttpContext.Session.GetString("CommentMessage");            
+            return View(model);
         } 
        
         public IActionResult DeleteTask(string id)
