@@ -3,7 +3,7 @@
 <div class="col-md-11" style="margin:auto; margin-top:5vh;">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Atanan Görevler</h3>
+            <h3 class="card-title">Atanan Görevler       @ViewBag.DeleteTask</h3>
         </div>
 
 
@@ -25,6 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if(Model!=null)
                     @foreach (var item in Model)
                     {
                         <tr>
@@ -62,10 +63,10 @@
                                 </a>
                             </td>
                             <td>
-                                <a href="task/deletetask/@item.Id" class="btn btn-warning">Düzenle</a>
+                                <a href="/task/updatetask?id=@item.Id" class="btn btn-warning">Düzenle</a>
                             </td>
                             <td>
-                                <a href="#" class="btn btn-danger">Sil</a>
+                                <a href="/task/deletetask?id=@item.Id" class="btn btn-danger">Sil</a>
                             </td>
                         </tr>
                     }

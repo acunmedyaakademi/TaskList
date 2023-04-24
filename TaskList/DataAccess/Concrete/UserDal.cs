@@ -135,6 +135,34 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
+        public bool DeleteUser(Guid id)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new SqlCommand("UPDATE users SET is_active = 0 WHERE id = @id", connection);
+
+                    command.Parameters.AddWithValue("@id", id);
+
+                    int a = command.ExecuteNonQuery();
+
+                    if (a == 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
+
         public User GetUserById(Guid id)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
