@@ -11,6 +11,9 @@ namespace TaskList.Business.Abstract
         ResponseModel UpdateTask(Task task);
 
         ResponseModel DoneTask(Guid TaskId);
+
+        ResponseModel UndoneTask(Guid TaskId);
+
         JoinedTask GetTask(Guid TaskId);
 
         ResponseModel DeleteTask(Guid TaskId);

@@ -342,6 +342,31 @@ namespace TaskList.DataAccess.Concrete
             }
         }
 
+        public bool UndoneTask(Guid TaskId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString.ConnectionValue))
+            {
+                try
+                {
+                    connection.Open();
+
+                    var command = new SqlCommand(
+                            "UPDATE Tasks SET [is_done] = 0 where id = @id and is_active = 1 ", connection);
+
+                    command.Parameters.AddWithValue("@id", TaskId);
+                    command.ExecuteNonQuery();
+
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+
+            }
+        }
+
         public bool UpdateTask(Task task)
         {
 

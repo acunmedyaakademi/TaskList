@@ -130,6 +130,30 @@ namespace TaskList.Business.Concrete
             return _taskDal.GetUsersTasks(id);
         }
 
+        public ResponseModel UndoneTask(Guid TaskId)
+        {
+            ResponseModel response = new();
+            response.Success = false;
+
+            string userName = _accessor.HttpContext.Session.GetString("LoginName");
+            JoinedTask task = _taskDal.GetTask(TaskId);
+            if (task.AssingerName == userName && task != null)
+            {
+                if (_taskDal.DoneTask(TaskId))
+                {
+                    Task theTask = _taskDal.GetTaskById(TaskId); //todo mail controol
+                    User user = _userDal.GetUserById(theTask.AssignedById);
+                    //response.Success = _mailKitService.SendMailPassword(user.Email, task.TaskName + " " + "verdiğiniz görev bitti");
+                    response.Success = true;
+                    return response;
+                }
+                response.Message = "işlem gerçekleşmedi";
+                return response;
+            }
+            response.Message = "onu yapma";
+            return response;
+        }
+
         public ResponseModel UpdateTask(Task task)
         {
             ResponseModel response = new();

@@ -151,6 +151,21 @@ namespace TaskList.Controllers
 
         }
 
+        public IActionResult UndoneTask(string id)
+        {
+            if (HttpContext.Session.GetString("LoginName") == null)
+                return RedirectToAction("login", "account");
+
+            ResponseModel response = _taskService.UndoneTask(new Guid(id));
+
+            if (response.Success)
+            {
+                return RedirectToAction("index", "home");
+            }
+            return RedirectToAction("hata", "hata");
+
+        }
+
 
     }
 }
