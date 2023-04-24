@@ -313,7 +313,7 @@ namespace TaskList.DataAccess.Concrete
                     connection.Open();
 
                     var command = new SqlCommand(
-                            "SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id WHERE assigned_by_id = @id and is_active = 1",
+                            "SELECT t.id, u1.name, u2.name, [task_name], [task_description], t.[created_on], t.[updated_on], [is_done], t.[is_active] FROM tasks as t JOIN users as u1 ON t.assigner_id = u1.id JOIN users as u2 ON t.assigned_by_id = u2.id WHERE assigned_by_id = @id and t.is_active = 1",
                             connection);
                     command.Parameters.AddWithValue("@id", id);
 

@@ -30,10 +30,11 @@ namespace TaskList.Controllers
 
             model.Task = _taskService.GetTask(new Guid(id));
             model.Comments = _commentService.GetComments(new Guid(id));
-            ViewBag.CommentMessage = HttpContext.Session.GetString("CommentMessage");            
+            if (HttpContext.Session.GetString("CommentMessage") is not null)
+                ViewBag.CommentMessage = HttpContext.Session.GetString("CommentMessage");
             return View(model);
-        } 
-       
+        }
+
         public IActionResult DeleteTask(string id)
         {
             try
@@ -125,14 +126,28 @@ namespace TaskList.Controllers
 
             task.Id = new Guid(HttpContext.Session.GetString("UpdateTask"));
             task.AssingerId = new Guid(HttpContext.Session.GetString("LoginId"));
-            task.IsDone= false;
-            ResponseModel response= _taskService.UpdateTask(task);
+            task.IsDone = false;
+            ResponseModel response = _taskService.UpdateTask(task);
             if (response.Success)
             {
                 return RedirectToAction("AssignedTasks", "Task");
             }
             ViewBag.Update = response.Message;
             return RedirectToAction("AssignedTasks", "Task");
+
+        }
+        public IActionResult DoneTask(string id)
+        {
+            if (HttpContext.Session.GetString("LoginName") == null)
+                return RedirectToAction("login", "account");
+
+            ResponseModel response = _taskService.DoneTask(new Guid(id));
+
+            if (response.Success)
+            {
+                return RedirectToAction("index", "home");
+            }
+            return RedirectToAction("hata", "hata");
 
         }
 

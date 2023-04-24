@@ -20,23 +20,23 @@
 
                                 </tr>
                             </thead>
-                            @if(Model.Reports != null)
-                            @foreach (var item in Model.Reports)
-                            {
-                                <tr>
-                                    <td class="w-100">
-                                        <p @*todo buraya a at*@ class="text-reset">@item.Name</p>
-                                    </td>
+                            @if (Model.Reports != null)
+                                @foreach (var item in Model.Reports)
+                                {
+                                    <tr>
+                                        <td class="w-100">
+                                            <p @*todo buraya a at*@ class="text-reset">@item.Name</p>
+                                        </td>
 
-                                    <td class="text-nowrap">
-                                        <a href="#" class="text-muted">
-                                            <!-- Download SVG icon from http://tabler-icons.io/i/check -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l5 5l10 -10" /></svg>
-                                            @item.Done/@(item.Undone + item.Done)
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
+                                        <td class="text-nowrap">
+                                            <a href="#" class="text-muted">
+                                                <!-- Download SVG icon from http://tabler-icons.io/i/check -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l5 5l10 -10" /></svg>
+                                                @item.Done/@(item.Undone + item.Done)
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
 
                         </table>
                     </div>
@@ -47,9 +47,13 @@
 
             <div class="col-md-3" style="flex:2">
                 <div class="card">
+
+
                     <div class="card-header border-0">
                         <div class="card-title">Görevlerim</div>
                     </div>
+
+
                     <div class="card-table table-responsive">
                         <table class="table table-vcenter">
                             <thead>
@@ -62,29 +66,29 @@
                             </thead>
                             <tbody>
                                 @if (Model.UserTasks != null)
-                                @foreach (var item in Model.UserTasks)
-                                {
-                                    <tr>
-                                        <td class="text-nowrap text-muted">
-                                            <div class="text-truncate">
-                                                @item.AssingerName
-                                            </div>
-                                        </td>
-                                        <td class="td-truncate">
-                                            <div class="text-truncate">
-                                                <a href="/task/taskdetail?id=@item.Id">@item.TaskName</a>
-                                            </div>
-                                        </td>
-                                        <td class="text-nowrap text-muted">@item.UpdatedOn</td>
-                                        <td class="text-nowrap">
-                                            <a href="#" class="text-muted">
-                                                <!-- Download SVG icon from http://tabler-icons.io/i/message -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" /><path d="M8 9l8 0" /><path d="M8 13l6 0" /></svg>
-                                                3
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
+                                    @foreach (var item in Model.UserTasks)
+                                    {
+                                        <tr>
+                                            <td class="text-nowrap text-muted">
+                                                <div class="text-truncate">
+                                                    @item.AssingerName
+                                                </div>
+                                            </td>
+                                            <td class="td-truncate">
+                                                <div class="text-truncate">
+                                                    <a href="/task/taskdetail?id=@item.Id">@item.TaskName</a>
+                                                </div>
+                                            </td>
+                                            <td class="text-nowrap text-muted">@item.UpdatedOn</td>
+                                            <td class="text-nowrap">
+                                                <a href="#" class="text-muted">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/message -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" /><path d="M8 9l8 0" /><path d="M8 13l6 0" /></svg>
+                                                    3
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
 
                             </tbody>
                         </table>
@@ -117,51 +121,51 @@
                         </thead>
                         <tbody>
                             @if (Model.AllTasks != null)
-                            @foreach (var item in Model.AllTasks)
-                            {
-                                <tr>
+                                @foreach (var item in Model.AllTasks)
+                                {
+                                    <tr>
 
-                                    <td><p class="text-reset" tabindex="-1">@item.AssingerName</p></td>
+                                        <td><p class="text-reset" tabindex="-1">@item.AssingerName</p></td>
 
-                                    <td>
-                                        <span class="flag flag-country-tr"></span>
-                                        @item.AssignedByName
-                                    </td>
-
-                                    <td>
-                                        <a href="/task/TaskDetail?id=@item.Id" class="text-reset" tabindex="-1">@item.TaskName</a>
-                                    </td>
-
-                                    <td>
-                                        @item.UpdatedOn
-                                    </td>
-
-                                    <td>
-                                        @if (item.IsDone)
-                                        {
                                         <td>
-                                            <span class="badge bg-success me-1"></span> Tamamlandı
+                                            <span class="flag flag-country-tr"></span>
+                                            @item.AssignedByName
                                         </td>
 
-                                        }
-                                        else
-                                        {
                                         <td>
-                                            <span class="badge bg-danger me-1"></span> Tamamlanmadı
+                                            <a href="/task/TaskDetail?id=@item.Id" class="text-reset" tabindex="-1">@item.TaskName</a>
                                         </td>
-                                        }
 
-                                    </td>
-                                    <td></td>
-                                    <td class="text-nowrap">
-                                        <a href="#" class="text-muted">
-                                            <!-- Download SVG icon from http://tabler-icons.io/i/message -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" /><path d="M8 9l8 0" /><path d="M8 13l6 0" /></svg>
-                                            3
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
+                                        <td>
+                                            @item.UpdatedOn
+                                        </td>
+
+                                        <td>
+                                            @if (item.IsDone)
+                                            {
+                                            <td>
+                                                <span class="badge bg-success me-1"></span> Tamamlandı
+                                            </td>
+
+                                            }
+                                            else
+                                            {
+                                            <td>
+                                                <span class="badge bg-danger me-1"></span> Tamamlanmadı
+                                            </td>
+                                            }
+
+                                        </td>
+                                        <td></td>
+                                        <td class="text-nowrap">
+                                            <a href="#" class="text-muted">
+                                                <!-- Download SVG icon from http://tabler-icons.io/i/message -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" /><path d="M8 9l8 0" /><path d="M8 13l6 0" /></svg>
+                                                3
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
 
 
                         </tbody>
