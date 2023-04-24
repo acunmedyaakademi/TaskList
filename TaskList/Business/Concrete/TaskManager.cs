@@ -37,13 +37,18 @@ namespace TaskList.Business.Concrete
                 {
                     if (ControlUndoneTask(task.AssignedById))
                     {
-                        if (_taskDal.AddTask(task))
+                        if (userId != task.AssignedById)
                         {
-                            User user = _userDal.GetUserById(task.AssignedById); //todo semantik
-                            response.Success = _mailKitService.SendMailPassword(user.Email, task.TaskName + "- size görev geldi");
+                            if (_taskDal.AddTask(task))
+                            {
+                                User user = _userDal.GetUserById(task.AssignedById); //todo semantik
+                                response.Success = _mailKitService.SendMailPassword(user.Email, task.TaskName + "- size görev geldi");
+                                return response;
+                            }
+                            response.Message = "Görev eklenirken bir hata oluştu";
                             return response;
                         }
-                        response.Message = "Görev eklenirken bir hata oluştu";
+                        response.Message = "Kendine Görev Veremezsin";
                         return response;
                     }
                     response.Message = "Bu kullanıcın henüz bitirmediği bir görev var, yeni görev verilemez";
@@ -58,7 +63,7 @@ namespace TaskList.Business.Concrete
 
         public bool ControlUndoneTask(Guid AssingedById)
         {
-            return _taskDal.ControlUndoneTask(AssingedById); 
+            return _taskDal.ControlUndoneTask(AssingedById);
         }
 
         public ResponseModel DeleteTask(Guid TaskId)
@@ -137,9 +142,9 @@ namespace TaskList.Business.Concrete
 
             string userName = _accessor.HttpContext.Session.GetString("LoginName");
             JoinedTask task = _taskDal.GetTask(TaskId);
-            if (task.AssingerName == userName && task != null)
+            if (task.AssignedByName == userName && task != null)
             {
-                if (_taskDal.DoneTask(TaskId))
+                if (_taskDal.UndoneTask(TaskId))
                 {
                     Task theTask = _taskDal.GetTaskById(TaskId); //todo mail controol
                     User user = _userDal.GetUserById(theTask.AssignedById);
@@ -164,7 +169,17 @@ namespace TaskList.Business.Concrete
                 Guid userId = new Guid(_accessor.HttpContext.Session.GetString("LoginId"));
                 if (task.AssingerId == userId)
                 {
-                    response.Success = _taskDal.UpdateTask(task);
+                    if (_taskDal.ControlUndoneTask(task.AssignedById))
+                    {
+                        if (userId != task.AssignedById)
+                        {
+                            response.Success = _taskDal.UpdateTask(task);
+                            return response;
+                        }
+                        response.Message = "Kendine Görev Veremezsin";
+                        return response;
+                    }
+                    response.Message = "Bu kullanıcın henüz bitirmediği bir görev var, yeni görev verilemez";
                     return response;
                 }
                 response.Message = "onu yapma";

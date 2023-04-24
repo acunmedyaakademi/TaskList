@@ -1,6 +1,7 @@
 ﻿using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using System.Reflection;
 using TaskList.Business.Abstract;
 using TaskList.Core;
@@ -59,6 +60,8 @@ namespace TaskList.Controllers
 
         public IActionResult Register()
         {
+            if (HttpContext.Session.GetString("LoginName") != null)
+                return RedirectToAction("Index", "home");
             return View();
         }
 
@@ -91,6 +94,9 @@ namespace TaskList.Controllers
 
         public IActionResult ResetPassword()
         {
+            if (HttpContext.Session.GetString("LoginName") != null)
+                return RedirectToAction("Index", "home");
+
             return View();
         }
 
@@ -100,7 +106,6 @@ namespace TaskList.Controllers
         {
             if (HttpContext.Session.GetString("LoginName") != null)
                 return RedirectToAction("Index", "home");
-
             model.Email = HttpContext.Session.GetString("ForgetMail");
 
             if (ModelState.IsValid)
@@ -122,6 +127,9 @@ namespace TaskList.Controllers
 
         public IActionResult ForgetPassword()
         {
+            if (HttpContext.Session.GetString("LoginName") != null)
+                return RedirectToAction("Index", "home");
+
             return View();
         }
 
@@ -152,6 +160,7 @@ namespace TaskList.Controllers
 
         public IActionResult Logout()
         {
+
             HttpContext.Session.Remove("LoginId");
             HttpContext.Session.Remove("LoginName");
             HttpContext.Session.Remove("LoginMail");
@@ -160,6 +169,7 @@ namespace TaskList.Controllers
 
         public IActionResult ConfirmMail()
         {
+
             return View();
 
         }

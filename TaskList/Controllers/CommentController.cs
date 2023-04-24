@@ -19,8 +19,15 @@ namespace TaskList.Controllers
        
         public IActionResult CreateComment(Comment comment)
         {
-            if (HttpContext.Session.GetString("LoginName") == null)
+            if (HttpContext.Session.GetString("LoginName") == null )
                 return RedirectToAction("login", "account");
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("index", "home");
+
+            }
+
+
             string url = "/task/taskdetail?id=" + comment.TaskId;
             comment.UserId = new Guid(HttpContext.Session.GetString("LoginId"));
            

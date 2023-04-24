@@ -111,7 +111,7 @@ namespace TaskList.Controllers
             ResponseModel response = _taskService.AddTask(task);
             if (response.Success)
             {
-                RedirectToAction("users", "user");
+                return RedirectToAction("users", "user");
             }
             ViewBag.Create = response.Message;
             return View();
@@ -123,6 +123,12 @@ namespace TaskList.Controllers
         {
             if (HttpContext.Session.GetString("LoginName") == null)
                 return RedirectToAction("login", "account");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Update = "Model valid degil";
+                return View();
+            }
 
             task.Id = new Guid(HttpContext.Session.GetString("UpdateTask"));
             task.AssingerId = new Guid(HttpContext.Session.GetString("LoginId"));
